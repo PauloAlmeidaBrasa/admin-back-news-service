@@ -30,7 +30,7 @@ COPY . .
 
 RUN composer install --ignore-platform-reqs
 
-RUN php artisan key:generate
+#RUN php artisan key:generate
 
 #RUN chown -R www-data:www-data /storage
 
