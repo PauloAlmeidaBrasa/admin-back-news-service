@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Services\AuthService;
-use App\Http\Requests\LoginRequest;
-
 
 class AuthController extends Controller
 {
@@ -16,77 +13,26 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
-
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
 
-        // dd( $credentials);
-
+        $credentials = $request->validate([
+            'email'    => 'required',
+            'password' => 'required',
+        ]);
 
         $token = $this->authService->login($credentials);
 
         if (!$token) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        return response()->json([
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
-        ]);
+        return response()->json(['token' => $token]);
     }
-
-    public function logout()
+    public function logout(Request $request)
     {
         $this->authService->logout();
-        return response()->json(['message' => 'Successfully logged out']);
-    }
 
-    public function user()
-    {
-        $user = $this->authService->getAuthenticatedUser();
-        return response()->json($user);
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
-
-
-
-
-
-// namespace App\Http\Controllers;
-// use Illuminate\Http\Request;
-
-// use Illuminate\Support\Facades\Auth;
-// use Tymon\JWTAuth\Facades\JWTAuth;
-// use App\Models\User;
-
-// class AuthController extends Controller
-// {
-//     public function login(Request $request)
-//     {
-//         dd('1234');
-//         $credentials = $request->only('email', 'password');
-
-//         if (!$token = JWTAuth::attempt($credentials)) {
-//             return response()->json(['error' => 'Unauthorized'], 401);
-//         }
-
-//         return response()->json([
-//             'token' => $token,
-//             'token_type' => 'bearer',
-//             'expires_in' => JWTAuth::factory()->getTTL() * 60,
-//         ]);
-//     }
-
-//     public function logout()
-//     {
-//         JWTAuth::invalidate(JWTAuth::getToken());
-//         return response()->json(['message' => 'Successfully logged out']);
-//     }
-
-//     public function user()
-//     {
-//         return response()->json(Auth::user());
-//     }
-// }
