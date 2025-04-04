@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\AuthService;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -13,21 +14,33 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 
-        $credentials = $request->validate([
-            'email'    => 'required',
-            'password' => 'required',
-        ]);
+        try {
+            $credentials = $request->only('email', 'password');
 
-        $token = $this->authService->login($credentials);
 
-        if (!$token) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            $token = $this->authService->login($credentials);   
+    
+            if (!$token) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+    
+            return response()->json(['token' => $token]);
+        } catch (\Throwable $th) {
+            dd($th);
         }
+        // $credentials = $request->only('email', 'password');
 
-        return response()->json(['token' => $token]);
+
+        // $token = $this->authService->login($credentials);
+
+        // if (!$token) {
+        //     return response()->json(['message' => 'Invalid credentials'], 401);
+        // }
+
+        // return response()->json(['token' => $token]);
     }
     public function logout(Request $request)
     {

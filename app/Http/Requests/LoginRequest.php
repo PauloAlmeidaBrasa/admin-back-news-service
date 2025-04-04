@@ -1,65 +1,45 @@
 <?php
 
+// app/Http/Requests/LoginRequest.php
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules()
     {
-        // dd(__LINE__);
         return [
             'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ];
-    }
-    public function messages(): array
-    {
-        // dd(__LINE__);
-
-        return [
-            'email.required' => 'Email is required',
-            'email.email' => 'Valid email is required',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 8 characters',
+            'password' => 'required',
         ];
     }
 
-    public function successResponse($data = null, string $message = '', int $code = 200)
+    public function failedValidation(Validator $validator)
     {
-        dd(__LINE__);
-
-        return response()->json([
-            'success' => true,
-            'message' => $message,
-            'data' => $data
-        ], $code);
-    }
-    public function errorResponse(string $message, int $code = 400, $errors = null)
-    {
-        dd(__LINE__);
-
         throw new HttpResponseException(
             response()->json([
                 'success' => false,
-                'message' => $message,
-                'errors' => $errors
-            ], $code)
+                'message' => 'Validation errors',
+                'errors' => $validator->errors()
+            ], 422)
         );
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'Email is required',
+            'email.email' => 'Must be a valid email',
+            'password.required' => 'Password is required',
+            // 'password.min' => 'Password must be at least 8 characters',
+        ];
     }
 }
