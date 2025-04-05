@@ -14,20 +14,21 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): array
     {
 
         try {
             $credentials = $request->only('email', 'password');
 
 
-            $token = $this->authService->login($credentials);   
+            $returnService = $this->authService->login($credentials);   
     
-            if (!$token) {
-                return response()->json(['message' => 'Invalid credentials'], 401);
-            }
+
     
-            return response()->json(['token' => $token]);
+            return [
+                "status" => true,
+                "response" => response()->json(['token' => $returnService])
+            ];
         } catch (\Throwable $th) {
             dd($th);
         }

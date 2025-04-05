@@ -14,11 +14,20 @@ class AuthService
 
     public function login(array $credentials)
     {
-        if (auth()->attempt($credentials)) {
-            return auth()->user()->createToken('authToken')->plainTextToken;
-        }
 
-        return null;
+        return [
+            (object)["token" => "0fg809fg8d098g0d9f8dfgdgg8dfg0dgg"],
+            (object)["user"  => "paul"]
+        ]; 
+        // return [ ]
+        // if (auth()->attempt($credentials)) {
+        //     return auth()->user()->createToken('authToken')->plainTextToken;
+        // }
+        // if (!$token) {
+        //     return response()->json(['message' => 'Invalid credentials'], 401);
+        // }
+
+        // return null;
     }
 
     public function register(Request $request)
