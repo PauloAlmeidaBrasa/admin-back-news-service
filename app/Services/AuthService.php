@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
+
+
+
 
 class AuthService
 {
@@ -15,19 +21,20 @@ class AuthService
     public function login(array $credentials)
     {
 
-        return [
-            (object)["token" => "0fg809fg8d098g0d9f8dfgdgg8dfg0dgg"],
-            (object)["user"  => "paul"]
-        ]; 
-        // return [ ]
-        // if (auth()->attempt($credentials)) {
-        //     return auth()->user()->createToken('authToken')->plainTextToken;
-        // }
-        // if (!$token) {
-        //     return response()->json(['message' => 'Invalid credentials'], 401);
-        // }
-
-        // return null;
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                Log::warning('Failed login attempt for: ' . ($credentials['email'] ?? 'unknown'));
+                return false;
+            }
+            return $token;
+        } catch (JWTException $e) {
+            Log::warning('Failed login attempt for: ' . ($credentials['email'] ?? 'unknown'));
+            return false;
+            
+        } catch (\Throwable $e) {
+            Log::error('Unexpected login error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function register(Request $request)

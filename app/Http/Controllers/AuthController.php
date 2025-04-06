@@ -14,34 +14,21 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
-    public function login(LoginRequest $request): array
+    public function login(LoginRequest $request)
     {
 
+        $credentials = $request->only('email', 'password');
+
         try {
-            $credentials = $request->only('email', 'password');
-
-
-            $returnService = $this->authService->login($credentials);   
+            $token = $this->authService->login($credentials);
     
-
-    
-            return [
-                "status" => true,
-                "response" => response()->json(['token' => $returnService])
-            ];
+            return $this->respondWithToken($token);
         } catch (\Throwable $th) {
-            dd($th);
+            return response()->json([
+                'success' => false,
+                'message' => 'Authentication service unavailable'
+            ], 500);
         }
-        // $credentials = $request->only('email', 'password');
-
-
-        // $token = $this->authService->login($credentials);
-
-        // if (!$token) {
-        //     return response()->json(['message' => 'Invalid credentials'], 401);
-        // }
-
-        // return response()->json(['token' => $token]);
     }
     public function logout(Request $request)
     {
