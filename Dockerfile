@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-WORKDIR /app
+WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -32,7 +32,7 @@ RUN composer install --ignore-platform-reqs
 
 #RUN php artisan key:generate
 
-#RUN chown -R www-data:www-data /storage
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 8000
 
