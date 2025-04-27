@@ -10,14 +10,24 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Paulo',
-            'email' => 'paulo@example.com',
-            'password' => Hash::make('123456'),
-            // Add any other required fields for your User model
-        ]);
+
+        $users = [
+            [
+                'name' => 'Paulo',
+                'email' => 'paulo@example.com',
+                'password' => Hash::make('123456'),
+            ],
+            [
+                'name' => 'user1',
+                'email' => 'user1@example.com',
+                'password' => Hash::make('123456'),
+            ]
+        ];
+
+        foreach ($users as $user) {
+            User::create($user);
+        }
         
-        // Optional: Create additional test users
-        //User::factory()->count(5)->create(); // If using factories
+        User::factory()->count(5)->create();
     }
 }
