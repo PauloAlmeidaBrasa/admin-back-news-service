@@ -23,6 +23,13 @@ class AuthController extends Controller
 
         try {
             $token = $this->authService->login($credentials);
+
+            if (!$token['success']) {
+                return response()->json([
+                    'message' => $token['message'],
+                    'error' => $token['error']
+                ], $token['status_code']);
+            }
     
             return $this->respondWithToken($token);
         } catch (\Throwable $th) {
@@ -45,10 +52,10 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'user' => auth()->user()->name,
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'access_token' => $token['token'],
+            'token_type' => $token['token_type'],
+            'expires_in' => $token['expires_in'],
+            'user' => $token['user']
         ]);
     }
 }

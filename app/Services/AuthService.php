@@ -23,10 +23,22 @@ class AuthService
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                Log::warning('Failed login attempt for: ' . ($credentials['email'] ?? 'unknown'));
-                return false;
+
+                return [
+                    'success' => false,
+                    'error' => 'invalid_credentials',
+                    'message' => 'Email or password is incorrect',
+                    'status_code' => 401
+                ];
             }
-            return $token;
+
+            return [
+                'success' => true,
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => $this->geTokenExpires(),
+                'user' => auth()->user()->name
+            ];
         } catch (JWTException $e) {
             Log::warning('Failed login attempt for: ' . ($credentials['email'] ?? 'unknown'));
             return false;
@@ -61,41 +73,7 @@ class AuthService
             ]
         ]);
     }
+    protected function geTokenExpires() {
+        return auth()->factory()->getTTL() * 60;
+    }
 }
-
-
-
-
-/* namespace App\Services;
-
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-
-class AuthService
-{
-    public function register(array $data): User
-    {
-        // Logic to register a user
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
-
-    public function login(array $credentials): ?string
-    {
-        // Logic to authenticate a user
-        if (auth()->attempt($credentials)) {
-            return auth()->user()->createToken('authToken')->plainTextToken;
-        }
-
-        return null;
-    }
-
-    public function logout(): void
-    {
-        // Logic to log out a user
-        auth()->user()->tokens()->delete();
-    }
-} */
