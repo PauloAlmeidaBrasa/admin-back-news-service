@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -39,12 +38,12 @@ class AuthService
                 'expires_in' => $this->geTokenExpires(),
                 'user' => auth()->user()->name
             ];
-        } catch (JWTException $e) {
-            Log::warning('Failed login attempt for: ' . ($credentials['email'] ?? 'unknown'));
-            return false;
-            
         } catch (\Throwable $e) {
-            Log::error('Unexpected login error: ' . $e->getMessage());
+            Log::error([
+                'errorMessage' =>  $e->getMessage(),
+                'file' => $e->getFile(),
+                'number' => $e->getLine()
+            ]);
             return false;
         }
     }

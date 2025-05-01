@@ -33,9 +33,6 @@ class AuthController extends Controller
     
             return $this->respondWithToken($token);
         } catch (\Throwable $th) {
-            Log::debug([
-                'Error' => $th->getMessage()
-            ]);
 
             return response()->json([
                 'success' => false,
