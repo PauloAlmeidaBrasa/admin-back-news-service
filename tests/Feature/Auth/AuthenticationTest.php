@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use Mockery;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 
 class AuthenticationTest extends TestCase
@@ -64,6 +67,37 @@ class AuthenticationTest extends TestCase
                 // 'success' => false,
                 'error' => 'invalid_credentials',
                 'message' => 'Email or password is incorrect'
+            ]);
+    }
+
+
+
+    /** @test */
+    public function it_returns_generic_error_on_internal_server_errors()
+    {
+        // Create a test user
+        $user = User::factory()->create([
+            'email' => 'test1@example.com',
+            'password' => bcrypt('validpassword')
+        ]);
+
+        // Force a server error by mocking JWTAuth to throw an exception
+        JWTAuth::shouldReceive('attempt')
+            ->once()
+            ->andThrow(new \RuntimeException('Internal server error'));
+
+        $response = $this->postJson('/api/login', [
+            'email' => 'test@1example.com',
+            'password' => 'validpassword'
+        ]);
+
+        $response->assertStatus(500)
+            ->assertJson([
+                // 'success' => false,
+                'message' => 'Authentication service unavailable'
+            ])
+            ->assertJsonMissing([
+                'error' => 'Internal server error' // Ensure detailed error isn't exposed
             ]);
     }
 }
