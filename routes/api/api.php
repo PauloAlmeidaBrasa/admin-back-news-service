@@ -20,7 +20,7 @@ use App\Http\Controllers\AuthController;
 require __DIR__.'/login.php';
 
 // Authenticated routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['jwt.verify'])->group(function () {
     require __DIR__.'/user.php';
     
     // Admin routes
