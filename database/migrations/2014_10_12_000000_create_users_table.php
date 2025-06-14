@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')
                 ->references('id')
-                ->on('client')
-                ->onDelete('set null');
+                ->on('client');
+                // ->onDelete('set null');
         });
 
     }
