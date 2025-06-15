@@ -11,17 +11,21 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller {
 
+    protected $userRequest;
+
     protected $userService;
 
-    function __construct()
+    function __construct(UserRequest $userReq, UserService $userServ)
     {
-        $this->userService = $authService;
+        $this->userRequest = $userReq;
+        $this->userService = $userServ;
     }
 
-    public function index(){
-        dd('2e');
+    public function getUsersByClientId(){
+        $clientId = $this->userRequest->query('client_id');
 
-        dd('123');
+        $result = $this->userService->allUsersByClientId($clientId);
+        dd($result);
     }
 }
 
