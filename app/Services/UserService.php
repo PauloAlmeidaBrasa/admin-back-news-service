@@ -19,8 +19,8 @@ Class UserService {
                     ->orderBy('created_at', 'desc');
 
         return $paginate 
-            ? $query->paginate($perPage)
-            : $query->get();
+            ? $query->paginate($perPage)->toArray()
+            : $query->get()->toArray();
 
     }
 
