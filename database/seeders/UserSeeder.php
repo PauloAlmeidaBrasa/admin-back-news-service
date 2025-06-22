@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
                 'email' => 'paulo@eexample.com',
                 'password' => Hash::make('123456'),
                 'client_id' => 1,
-                'access_level' => 1
+                'access_level' => 4
             ],
             [
                 'name' => 'user1',

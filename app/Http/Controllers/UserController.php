@@ -25,7 +25,7 @@ class UserController extends Controller {
         $clientId = $this->userRequest->query('client_id');
 
         $result = $this->userService->allUsersByClientId($clientId);
-        return $this->respondWithSucess($result,'users');
+        return $this->respondWithSuccess($result,'users');
     }
 }
 
