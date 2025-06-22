@@ -17,13 +17,14 @@ class UserSeeder extends Seeder
                 'email' => 'paulo@eexample.com',
                 'password' => Hash::make('123456'),
                 'client_id' => 1,
-                'access_level' => 4
+                'access_level' => 3
             ],
             [
-                'name' => 'user1',
+                'name' => 'userEditor',
                 'email' => 'user1@example.com',
                 'password' => Hash::make('123456'),
-                'access_level' => 4
+                'client_id' => 1,
+                'access_level' => 2
             ]
         ];
 

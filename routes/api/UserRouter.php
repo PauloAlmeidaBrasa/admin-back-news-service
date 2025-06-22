@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 
 // Route::middleware(['jwt.verify'])->group(function () {
 
-Route::get('/users-by-client', [UserController::class,'getUsersByClientId'])->middleware(['auth', 'access.level:4']);
+Route::get('/users-by-client', [UserController::class,'getUsersByClientId'])->middleware(['auth', 'access.level:3']);
 // });
 // Route::get('/users-by-client', function () {
 //     // Admin dashboard

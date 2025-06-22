@@ -26,7 +26,7 @@ return new class extends Migration
                 // ->onDelete('set null');
             $table->tinyInteger('access_level')
             ->default(1)
-            ->comment('1=Viewer, 2=Editor, 4=Admin');
+            ->comment('1=Viewer, 2=Editor, 3=Admin');
         });
 
     }
