@@ -24,4 +24,8 @@ Class UserService {
 
     }
 
+    public function addUserService($clientId){
+        
+    }
+
 }

@@ -17,7 +17,11 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required',
+            // 'client_id' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'access_level' => 'required|integer|between:1,3'
         ];
     }
 
