@@ -17,11 +17,11 @@ use App\Http\Controllers\AuthController;
 
 
 // Public routes
-require __DIR__.'/login.php';
+require __DIR__.'/LoginRouter.php';
 
 // Authenticated routes
 Route::middleware(['jwt.verify'])->group(function () {
-    require __DIR__.'/user.php';
+    require __DIR__.'/UserRouter.php';
     
     // Admin routes
     // Route::prefix('admin')->middleware('role:admin')->group(function () {

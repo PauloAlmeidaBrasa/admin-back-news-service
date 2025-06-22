@@ -24,9 +24,8 @@ class UserController extends Controller {
     public function getUsersByClientId(){
         $clientId = $this->userRequest->query('client_id');
 
-        $usersResult = $this->userService->allUsersByClientId($clientId);
-        return $this->respondWithSuccess($usersResult,'users');
-        // dd($result);
+        $result = $this->userService->allUsersByClientId($clientId);
+        return $this->respondWithSucess($result,'users');
     }
 }
 
