@@ -24,6 +24,9 @@ return new class extends Migration
                 ->references('id')
                 ->on('client');
                 // ->onDelete('set null');
+            $table->tinyInteger('access_level')
+            ->default(1)
+            ->comment('1=Viewer, 2=Editor, 4=Admin');
         });
 
     }
