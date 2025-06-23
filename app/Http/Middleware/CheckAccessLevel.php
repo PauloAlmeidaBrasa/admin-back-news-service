@@ -17,10 +17,12 @@ class CheckAccessLevel
     {
 
         if (auth()->user()->access_level < $requiredLevel) {
-            abort(403, 'Insufficient access level');
+            return response()->json([
+                'success' => false,
+                'message' => 'Insufficient access level'
+            ], 403);
         }
         
-
         return $next($request);
     }
 }
