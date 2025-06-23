@@ -28,10 +28,12 @@ class UserController extends Controller {
         return $this->respondWithSuccess($result,'users');
     }
     public function store(){
-        $clientId = $this->userRequest->query('client_id');
 
-        dd($clientId);
-        $result = $this->userService->addUserService($clientId);
+
+        dd($this->userRequest);
+        // $userValidator = new UserRequest();
+        // dd($userValidator);
+        $credentials = $request->only('email', 'password');
 
     }
 }

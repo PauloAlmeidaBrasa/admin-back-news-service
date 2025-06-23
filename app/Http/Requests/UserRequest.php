@@ -16,13 +16,23 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            // 'client_id' => 'required',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'access_level' => 'required|integer|between:1,3'
-        ];
+        $routeName = $this->route()->getName();
+
+        $rules = [];
+
+        switch ($routeName) {
+            case 'users.all':
+                break;
+            case 'users.store':
+                $rules = [
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required|min:8',
+                    'name' => 'required|string|max:255'
+                ];
+                break;
+        
+        }
+        return $rules;
     }
 
     public function failedValidation(Validator $validator)
@@ -39,8 +49,8 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-            'client_id' => 'Client ID is require'
-            // 'email.required' => 'Email is required',
+            'client_id' => 'Client ID is require',
+            'email.required' => 'Email is required',
             // 'email.email' => 'Must be a valid email',
             // 'password.required' => 'Password is required',
             // 'password.min' => 'Password must be at least 8 characters',
