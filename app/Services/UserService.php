@@ -24,8 +24,13 @@ Class UserService {
 
     }
 
-    public function addUserService($clientId){
-        
+    public function create($userData){
+
+        return User::create([
+            'name' => $userData["name"],
+            'email' => $userData["email"],
+            'password' => $userData["password"]
+        ]);
     }
 
 }

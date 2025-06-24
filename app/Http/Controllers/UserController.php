@@ -30,10 +30,21 @@ class UserController extends Controller {
     public function store(){
 
 
-        dd($this->userRequest);
-        // $userValidator = new UserRequest();
-        // dd($userValidator);
-        $credentials = $request->only('email', 'password');
+        // $userName = $this->userRequest->input("name");
+        // $userPass = $this->userRequest->input("password");
+        // $userEmail = $this->userRequest->input("email");
+
+        // Create user
+
+        $userData = [
+            'name'     => $this->userRequest->input("name"),
+            'email'    => $this->userRequest->input("email"),
+            'password' => $this->userRequest->input("password")
+        ];
+
+        $user = $this->userService->create($userData);
+        // dd($user);
+        return $this->respondWithSuccess($user->name,'users');
 
     }
 }
