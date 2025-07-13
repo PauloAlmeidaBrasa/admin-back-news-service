@@ -22,9 +22,11 @@ class UserController extends Controller {
     }
 
     public function getUsersByClientId(){
-        $clientId = $this->userRequest->query('client_id');
 
-        $result = $this->userService->allUsersByClientId($clientId);
+        $payload = auth()->payload();
+        $client =  $payload->get('client_id');
+
+        $result = $this->userService->allUsersByClientId($client);
         return $this->respondWithSuccess($result,'users');
     }
     public function store(){
