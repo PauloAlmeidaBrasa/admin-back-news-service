@@ -31,6 +31,13 @@ class AuthService
                 ];
             }
 
+            $user = auth()->user();
+            $token = auth()->claims([
+                'client_id' => $user->client_id,
+                'access_level' => $user->access_level,
+                'name' => $user->name
+            ])->login($user);
+
             return [
                 'success' => true,
                 'token' => $token,

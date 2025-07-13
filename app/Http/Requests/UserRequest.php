@@ -22,6 +22,9 @@ class UserRequest extends FormRequest
 
         switch ($routeName) {
             case 'users.all':
+                $rules = [
+                    'client_id' => 'required'
+                ];
                 break;
             case 'users.store':
                 $rules = [
