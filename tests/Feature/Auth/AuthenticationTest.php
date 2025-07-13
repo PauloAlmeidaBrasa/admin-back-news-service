@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Client;
 use Mockery;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -29,14 +30,16 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_token_with_valid_credentials()
     {
+        Client::factory()->create(['name' => 'teste']);
         $user = User::factory()->create([
             'name' => 'userTeste',
-            'email' => 'test1@example.com',
-            'password' => bcrypt('validpassword')
+            'email' => 'test12@example.com',
+            'password' => bcrypt('validpassword'),
+            'client_id' => 1
         ]);
 
         $response = $this->postJson('/api/login', [
-            'email' => 'test1@example.com',
+            'email' => 'test12@example.com',
             'password' => 'validpassword'
         ]);
 
@@ -52,9 +55,12 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_error_with_invalid_credentials()
     {
+        Client::factory()->create(['name' => 'teste']);
         User::factory()->create([
+            'name' => 'userTeste',
             'email' => 'test@example.com',
-            'password' => bcrypt('validpassword')
+            'password' => bcrypt('validpassword'),
+            'client_id' => 2
         ]);
 
         $response = $this->postJson('/api/login', [
@@ -75,10 +81,12 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_generic_error_on_internal_server_errors()
     {
-        // Create a test user
-        $user = User::factory()->create([
-            'email' => 'test1@example.com',
-            'password' => bcrypt('validpassword')
+        Client::factory()->create(['name' => 'teste']);
+        User::factory()->create([
+            'name' => 'userTeste',
+            'email' => 'test@example.com',
+            'password' => bcrypt('validpassword'),
+            'client_id' => 3
         ]);
 
         // Force a server error by mocking JWTAuth to throw an exception
