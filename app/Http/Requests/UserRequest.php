@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
             case 'users.store':
                 $rules = [
                     'email' => 'required|email|unique:users',
-                    'password' => 'required|min:8',
+                    'password' => 'required|min:6',
                     'name' => 'required|string|max:255'
                 ];
                 break;
