@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+// use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
 
@@ -26,11 +27,16 @@ Class UserService {
 
     public function create($userData){
 
+        // \DB::enableQueryLog();
+
         return User::create([
             'name' => $userData["name"],
             'email' => $userData["email"],
-            'password' => $userData["password"]
+            'password' => $userData["password"],
+            'client_id' => $userData["client_id"]
         ]);
+        // $query = \DB::getQueryLog();
+        // dd($query[0]['query'], $query[0]['bindings']);    
     }
 
 }
