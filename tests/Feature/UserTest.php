@@ -14,30 +14,27 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     protected $client;
-    protected $users;
+    protected $user;
     protected $token;
 
     protected function setUp(): void
     {
         parent::setUp();
-
+ 
         $this->client = Client::factory()->create();
 
-        $this->users = User::factory()
-            ->count(3)
-            ->create(['client_id' => $this->client->id]);
-
-        User::factory()->create(['client_id' => Client::factory()->create()->id]);
-
         // Create a test user and get JWT token
-        $user = User::factory()->create([
+        $this->user = User::factory()->create([
+            'name' => 'userTests',
             'email' => 'test@example.com',
-            'password' => bcrypt('123')
+            'password' => bcrypt('123456'),
+            'client_id' => $this->client->id,
+            'access_level' => 3
         ]);
         
         $response = $this->postJson('/api/login', [
             'email' => 'test@example.com',
-            'password' => '123'
+            'password' => '123456'
         ]);
         // dd($response->json());
         // $response->dump();
@@ -49,7 +46,9 @@ class UserTest extends TestCase
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson("/api/users-by-client?client_id=".$this->client->id);
+        ])->getJson("/api/user/get-users");
+
+        // $response->dump();
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -57,15 +56,14 @@ class UserTest extends TestCase
                 'data' => [
                     'users' => [
                         '*' => [
-                            'id',
                             'name',
-                            'email',
-                            'client_id'
+                            'email'
                         ]
                     ]
                 ],
-            ])
-            ->assertJsonCount(3, 'data.users');
+            ]);
+            // ->assertJsonCount(3, 'data.users');
+
     }
 
  

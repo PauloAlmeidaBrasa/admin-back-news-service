@@ -27,6 +27,15 @@ class UserController extends Controller {
         $client =  $payload->get('client_id');
 
         $result = $this->userService->allUsersByClientId($client);
+
+        $result = array_map(function($user) {
+            return (object)[
+                'name' => $user["name"],
+                'email' => $user["email"]
+            ];
+        },$result);
+
+
         return $this->respondWithSuccess($result,'users');
     }
     public function store(){
