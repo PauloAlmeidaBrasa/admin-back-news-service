@@ -16,31 +16,41 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $client;
+    protected $user;
+    protected $token;
 
-    // protected function setUp(): void
-    // {
-    //     parent::setUp();
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+ 
+        $this->client = Client::factory()->create();
+
+        // Create a test user and get JWT token
+        $this->user = User::factory()->create([
+            'name' => 'userTests',
+            'email' => 'test@example.com',
+            'password' => bcrypt('123456'),
+            'client_id' => $this->client->id,
+            'access_level' => 3
+        ]);
+        // $this->user->dump();
+
         
-    //     // This creates a user IN THE TEST DATABASE only
-    //     $this->user = User::factory()->create([
-    //         'email' => 'test@example.com',
-    //         'password' => bcrypt('validpassword')
-    //     ]);
-    // }
+        $response = $this->postJson('/api/login', [
+            'email' => 'test@example.com',
+            'password' => '123456'
+        ]);
+        
+        $this->token = $response->json('access_token');
+    }
     /** @test */
     public function it_returns_token_with_valid_credentials()
     {
-        Client::factory()->create(['name' => 'teste']);
-        $user = User::factory()->create([
-            'name' => 'userTeste',
-            'email' => 'test12@example.com',
-            'password' => bcrypt('validpassword'),
-            'client_id' => 1
-        ]);
-
         $response = $this->postJson('/api/login', [
-            'email' => 'test12@example.com',
-            'password' => 'validpassword'
+            'email' => 'test@example.com',
+            'password' => '123456'
         ]);
 
 
@@ -55,14 +65,6 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_error_with_invalid_credentials()
     {
-        Client::factory()->create(['name' => 'teste']);
-        User::factory()->create([
-            'name' => 'userTeste',
-            'email' => 'test@example.com',
-            'password' => bcrypt('validpassword'),
-            'client_id' => 2
-        ]);
-
         $response = $this->postJson('/api/login', [
             'email' => 'test@example.com',
             'password' => 'wrongpassword'
@@ -81,13 +83,7 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_generic_error_on_internal_server_errors()
     {
-        Client::factory()->create(['name' => 'teste']);
-        User::factory()->create([
-            'name' => 'userTeste',
-            'email' => 'test@example.com',
-            'password' => bcrypt('validpassword'),
-            'client_id' => 3
-        ]);
+
 
         // Force a server error by mocking JWTAuth to throw an exception
         JWTAuth::shouldReceive('attempt')
@@ -107,5 +103,21 @@ class AuthenticationTest extends TestCase
             ->assertJsonMissing([
                 'error' => 'Internal server error' // Ensure detailed error isn't exposed
             ]);
+    }
+    public function test_returns_unauthorized_for_invalid_token(): void
+    {
+        $invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTc1MjQ5Mjc2NywiZXhwIjoxNzUyNDk2MzY3LCJuYmYiOjE3NTI0OTI3NjcsImp0aSI6IlhiYldFdzRoQll4aHB3dmciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsImNsaWVudF9pZCI6MSwiYWNjZXNzX2xldmVsIjozLCJuYW1lIjoiUGF1bG8ifQ.YWdwXcBFsnQyR3qwJM2JoUb2qsX686x8rmcNhrSA4-M";  
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $invalidToken,
+        ])->getJson("/api/user/get-users");
+            
+        $response->dump();
+
+        $response->assertStatus(401)
+            ->assertJson([
+                'message'=> 'Token has expired'
+
+            ]);
+
     }
 }

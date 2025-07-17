@@ -42,7 +42,7 @@ class UserTest extends TestCase
         
         $this->token = $response->json('access_token');
     }
-    public function test_returns_json_object_with_data(): void
+    public function test_returns_json_object_with_user_data(): void
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
@@ -65,6 +65,7 @@ class UserTest extends TestCase
             // ->assertJsonCount(3, 'data.users');
 
     }
+ 
 
  
 }
