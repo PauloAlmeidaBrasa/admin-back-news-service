@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\AuthService;
+// use App\Services\AuthService;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Log;
 
@@ -12,26 +12,28 @@ class AuthController extends Controller
 {
     protected $authService;
 
-    public function __construct(AuthService $authService)
+    public function __construct()
     {
-        $this->authService = $authService;
+        dd(__LINE__);
+        // $this->authService = $authService;
     }
     public function login(LoginRequest $request)
     {
 
+        dd('SSSSSSSSSS');
         $credentials = $request->only('email', 'password');
 
         try {
-            $token = $this->authService->login($credentials);
+            // $token = $this->authService->login($credentials);
 
-            if (!$token['success']) {
-                return response()->json([
-                    'message' => $token['message'],
-                    'error' => $token['error']
-                ], $token['status_code']);
-            }
+            // if (!$token['success']) {
+            //     return response()->json([
+            //         'message' => $token['message'],
+            //         'error' => $token['error']
+            //     ], $token['status_code']);
+            // }
     
-            return $this->respondWithToken($token);
+            return $this->respondWithToken('');
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -56,3 +58,5 @@ class AuthController extends Controller
         ]);
     }
 }
+
+

@@ -14,16 +14,20 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-$apVersion = $_ENV['APP_VERSION'];
+// require __DIR__.'/LoginRouter.php';
+// dd(config('app.version'));
+
+// Route::post('login', [AuthController::class, 'login']);
 
 
-Route::prefix($apVersion)->group(function () {
-
-require __DIR__.'/LoginRouter.php';
+// Route::prefix(config('app.version'))->group(function () {
+// Route::post('login', [AuthController::class, 'login']);
+// dd('AKI2');
+require  __DIR__.'/LoginRouter.php';
 
 // Authenticated routes
 Route::middleware(['jwt.verify'])->group(function () {
-    require __DIR__.'/UserRouter.php';
+    // require __DIR__.'/UserRouter.php';
     
     // Admin routes
     // Route::prefix('admin')->middleware('role:admin')->group(function () {
@@ -31,7 +35,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     // });
 });
 
-});
+// });
 // Public routes
 
 
