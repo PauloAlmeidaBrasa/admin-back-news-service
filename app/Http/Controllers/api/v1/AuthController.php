@@ -40,4 +40,13 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token['token'],
+            'token_type' => $token['token_type'],
+            'expires_in' => $token['expires_in'],
+            'user' => $token['user']
+        ]);
+    }
 }
