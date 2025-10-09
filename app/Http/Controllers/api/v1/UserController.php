@@ -4,10 +4,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller {

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Services\AuthService;
+use App\Http\Controllers\api\v1\BaseController;
 
 
-class AuthController extends Controller
+
+class AuthController extends BaseController
 {
     protected $authService;
 
@@ -18,7 +19,6 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
 
-        // dd($request);
         $credentials = $request->only('email', 'password');
 
         try {
@@ -39,14 +39,5 @@ class AuthController extends Controller
                 'message' => 'Authentication service unavailable'
             ], 500);
         }
-    }
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token['token'],
-            'token_type' => $token['token_type'],
-            'expires_in' => $token['expires_in'],
-            'user' => $token['user']
-        ]);
     }
 }
