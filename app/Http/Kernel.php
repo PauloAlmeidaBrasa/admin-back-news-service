@@ -68,7 +68,7 @@ class Kernel extends HttpKernel
         'access.level' => \App\Http\Middleware\CheckAccessLevel::class,
 
         'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
-        'jwt.verify' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
     ];
 }

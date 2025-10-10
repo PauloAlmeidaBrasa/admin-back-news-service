@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
+
 
 class BaseController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     protected function sendSuccess($data, string $message = 'Success', int $status = 200): JsonResponse
     {
         return response()->json([
@@ -32,5 +36,14 @@ class BaseController extends Controller
             'expires_in' => $token['expires_in'],
             'user' => $token['user']
         ]);
+    }
+    public function respondWithSuccess($data, string $feature, int $statusCode = 200, ?string $message = null)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                $feature => $data
+            ],
+        ], $statusCode);
     }
 }
