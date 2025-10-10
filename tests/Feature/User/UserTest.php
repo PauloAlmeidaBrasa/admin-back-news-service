@@ -23,7 +23,6 @@ class UserTest extends TestCase
  
         $this->client = Client::factory()->create();
 
-        // Create a test user and get JWT token
         $this->user = User::factory()->create([
             'name' => 'userTests',
             'email' => 'test@example.com',
@@ -32,21 +31,18 @@ class UserTest extends TestCase
             'access_level' => 3
         ]);
         
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/v1/login', [
             'email' => 'test@example.com',
             'password' => '123456'
         ]);
-        // dd($response->json());
-        // $response->dump();
-        // logger($response->json());
         
         $this->token = $response->json('access_token');
     }
-    public function test_returns_json_object_with_user_data(): void
+    public function test_returns_json_object_with_users_data(): void
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson("/api/user/get-users");
+        ])->getJson("/api/v1/user/get-users");
 
         // $response->dump();
 
@@ -65,7 +61,21 @@ class UserTest extends TestCase
             // ->assertJsonCount(3, 'data.users');
 
     }
- 
+    public function test_returns_unauthorized_for_invalid_token(): void
+    {
+        $invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTc1MjQ5Mjc2NywiZXhwIjoxNzUyNDk2MzY3LCJuYmYiOjE3NTI0OTI3NjcsImp0aSI6IlhiYldFdzRoQll4aHB3dmciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsImNsaWVudF9pZCI6MSwiYWNjZXNzX2xldmVsIjozLCJuYW1lIjoiUGF1bG8ifQ.YWdwXcBFsnQyR3qwJM2JoUb2qsX686x8rmcNhrSA4-M";  
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $invalidToken,
+        ])->getJson("/api/v1/user/get-users");
+            
+        $response->dump();
 
+        var_dump($response);
+        $response->assertStatus(401)
+            ->assertJson([
+                'error'=> 'Token is Invalid'
+            ]);
+
+    }
  
 }

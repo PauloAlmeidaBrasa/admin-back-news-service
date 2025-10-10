@@ -35,10 +35,9 @@ class AuthenticationTest extends TestCase
             'client_id' => $this->client->id,
             'access_level' => 3
         ]);
-        // $this->user->dump();
 
         
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/v1/login', [
             'email' => 'test@example.com',
             'password' => '123456'
         ]);
@@ -48,7 +47,7 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_token_with_valid_credentials()
     {
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/v1/login', [
             'email' => 'test@example.com',
             'password' => '123456'
         ]);
@@ -65,7 +64,7 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function it_returns_error_with_invalid_credentials()
     {
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/v1/login', [
             'email' => 'test@example.com',
             'password' => 'wrongpassword'
         ]);
@@ -90,9 +89,9 @@ class AuthenticationTest extends TestCase
             ->once()
             ->andThrow(new \RuntimeException('Internal server error'));
 
-        $response = $this->postJson('/api/login', [
-            'email' => 'test@1example.com',
-            'password' => 'validpassword'
+        $response = $this->postJson('/api/v1/login', [
+            'email' => 'test@example.com',
+            'password' => '123456'
         ]);
 
         $response->assertStatus(500)
@@ -103,21 +102,5 @@ class AuthenticationTest extends TestCase
             ->assertJsonMissing([
                 'error' => 'Internal server error' // Ensure detailed error isn't exposed
             ]);
-    }
-    public function test_returns_unauthorized_for_invalid_token(): void
-    {
-        $invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTc1MjQ5Mjc2NywiZXhwIjoxNzUyNDk2MzY3LCJuYmYiOjE3NTI0OTI3NjcsImp0aSI6IlhiYldFdzRoQll4aHB3dmciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsImNsaWVudF9pZCI6MSwiYWNjZXNzX2xldmVsIjozLCJuYW1lIjoiUGF1bG8ifQ.YWdwXcBFsnQyR3qwJM2JoUb2qsX686x8rmcNhrSA4-M";  
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $invalidToken,
-        ])->getJson("/api/user/get-users");
-            
-        $response->dump();
-
-        $response->assertStatus(401)
-            ->assertJson([
-                'message'=> 'Token has expired'
-
-            ]);
-
     }
 }
