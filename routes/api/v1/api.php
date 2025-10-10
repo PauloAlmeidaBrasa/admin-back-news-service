@@ -18,11 +18,7 @@ require  __DIR__.'/LoginRouter.php';
 // Authenticated routes
 Route::middleware(['jwt.verify'])->group(function () {
     require __DIR__.'/UserRouter.php';
-    
-    // Admin routes
-    // Route::prefix('admin')->middleware('role:admin')->group(function () {
-    //     require __DIR__.'/admin/user.php';
-    // });
+
 });
 
 

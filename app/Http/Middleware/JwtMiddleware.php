@@ -13,10 +13,8 @@ class JwtMiddleware
     public function handle($request, Closure $next)
     {
         try {
-                        // dd('123');
 
             JWTAuth::parseToken()->authenticate();
-            // dd('123');
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException) {
                 return response()->json(['error' => 'Token is Invalid'], 401);
