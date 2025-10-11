@@ -1,66 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+📰 Admin Back News Service API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel 10 RESTful API that powers the Admin Back News Service, providing backend functionality for managing news content.
+It uses JWT authentication for secure access and supports both Docker and local development environments.
 
-## About Laravel
+🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel 10 Framework
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+JWT Authentication (JSON Web Tokens)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Database migrations and seeders
 
-## Learning Laravel
+Configurable API versioning
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Dockerized environment for easy setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Compatible with the orchestrator-news
+ repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+⚙️ Requirements
 
-## Laravel Sponsors
+If running locally (without Docker), make sure you have:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+PHP 8.2+
 
-### Premium Partners
+Composer
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+MySQL or MariaDB
 
-## Contributing
+OpenSSL, PDO, Mbstring, Tokenizer, XML extensions enabled
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+If running with Docker, you only need Docker and Docker Compose installed.
 
-## Code of Conduct
+🧩 Environment Setup
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Before running the API, you must create a .env file in the project root.
 
-## Security Vulnerabilities
+You can copy the example:   cp .env.example .env
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Then, edit the file and set at least the following variables:
 
-## License
+API_VERSION=v1
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+DB_CONNECTION=mysql
+
+DB_HOST=127.0.0.1
+
+DB_PORT=3306
+
+DB_DATABASE=your_database
+
+DB_USERNAME=your_user
+
+DB_PASSWORD=your_password
+
+🐳 Running with Docker
+
+Build the image
+
+docker build -t admin-back-news-service .
+
+Run the container
+
+docker run -d -p 8000:8000 --name admin-back-news-service admin-back-news-service
+
+Then access the API at:
+👉 http://0.0.0.0:8000
+
+🧭 Running through the Orchestrator
+
+You can also run this API through the orchestrator-news https://github.com/PauloAlmeidaBrasa/news-orchestrator
+ repository using docker-compose:
+
+git clone https://github.com/PauloAlmeidaBrasa/news-orchestrator.git
+
+cd orchestrator-news
+
+git submodule update --init backend-news-service
+
+docker compose up --build
+
+💻 Running Locally (Without Docker)
+1. Install dependencies
+composer install
+
+2. Generate application key
+php artisan key:generate
+
+3. Run migrations and seed the database
+php artisan migrate --seed
+
+4. Start the local server
+php artisan serve
+
+
+The API will be available at:
+👉 http://0.0.0.0:8000
+
+🔐 Authentication
+
+This API uses JWT (JSON Web Token) for authentication.
+After registering or logging in, include your token in the Authorization header:
+
+Authorization: Bearer <your_token_here>
+
+🧱 Database Seeding
+
+To populate the minimum required data:
+
+php artisan db:seed
+
+
+You can also re-run migrations with fresh data:
+
+php artisan migrate:fresh --seed
+
+🧪 Testing
+
+Run the test suite using:
+
+php artisan test
