@@ -1,102 +1,122 @@
-🚀 Admin Back News Service API
-<div align="center">
-A robust Laravel 10 REST API for news management with JWT authentication
-</div>
-📋 Table of Contents
-Features
+📰 Admin Back News Service API
 
-Prerequisites
+This is a Laravel 10 RESTful API that powers the Admin Back News Service, providing backend functionality for managing news content.
+It uses JWT authentication for secure access and supports both Docker and local development environments.
 
-Quick Start
+🚀 Features
 
-Environment Setup
+Laravel 10 Framework
 
-Installation
+JWT Authentication (JSON Web Tokens)
 
-API Documentation
+Database migrations and seeders
 
-Development
+Configurable API versioning
 
-✨ Features
-Feature	Description
-🔐 JWT Authentication	Secure token-based authentication system
-📰 News Management	Full CRUD operations for news articles
-🐳 Docker Support	Containerized development and production
-🗄️ Database Migrations	Structured database schema management
-🌱 Data Seeding	Pre-populated with essential data
-🔒 Security	Built-in security best practices
+Dockerized environment for easy setup
 
-🛠 Prerequisites
-Before you begin, ensure you have:
+Compatible with the orchestrator-news
+ repository
 
-🐘 PHP 8.2 or higher
+⚙️ Requirements
 
-📦 Composer (for local development)
+If running locally (without Docker), make sure you have:
 
-🗄️ MySQL/PostgreSQL database
+PHP 8.2+
 
-🐳 Docker (optional, for containerized setup)
+Composer
 
-🚀 Quick Start
-Option 1: 🐳 Docker Setup (Recommended)
-Standalone Container:
+MySQL or MariaDB
 
-# 🔨 Build the Docker image
+OpenSSL, PDO, Mbstring, Tokenizer, XML extensions enabled
+
+If running with Docker, you only need Docker and Docker Compose installed.
+
+🧩 Environment Setup
+
+Before running the API, you must create a .env file in the project root.
+
+You can copy the example:   cp .env.example .env
+
+Then, edit the file and set at least the following variables:
+
+API_VERSION=v1
+
+DB_CONNECTION=mysql
+
+DB_HOST=127.0.0.1
+
+DB_PORT=3306
+
+DB_DATABASE=your_database
+
+DB_USERNAME=your_user
+
+DB_PASSWORD=your_password
+
+🐳 Running with Docker
+
+Build the image
+
 docker build -t admin-back-news-service .
 
-# 🏃 Run the container
+Run the container
+
 docker run -d -p 8000:8000 --name admin-back-news-service admin-back-news-service
-Using Docker Compose:
 
-# 📁 Navigate to the orchestrator repository
-cd orchestrator-new
+Then access the API at:
+👉 http://0.0.0.0:8000
 
-# 🚀 Start all services
-docker-compose up -d
-Option 2: 💻 Local Development
+🧭 Running through the Orchestrator
 
-# 1. 📦 Install dependencies
+You can also run this API through the orchestrator-news https://github.com/PauloAlmeidaBrasa/news-orchestrator
+ repository using docker-compose:
+
+git clone https://github.com/PauloAlmeidaBrasa/news-orchestrator.git
+
+cd orchestrator-news
+
+git submodule update --init backend-news-service
+
+docker compose up --build
+
+💻 Running Locally (Without Docker)
+1. Install dependencies
 composer install
 
-# 2. 🔑 Generate application key
+2. Generate application key
 php artisan key:generate
 
-# 3. 🎯 Generate JWT secret
-php artisan jwt:secret
-
-# 4. 🗄️ Setup database
+3. Run migrations and seed the database
 php artisan migrate --seed
 
-# 5. 🏃 Start server
+4. Start the local server
 php artisan serve
 
 
-⚙️ Environment Setup
-Create a .env file and configure:
+The API will be available at:
+👉 http://0.0.0.0:8000
 
-env
-# 🚀 API Configuration
-API_VERSION=v1
+🔐 Authentication
 
-# 🗄️ Database Configuration
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=news_back_db
-DB_USERNAME=laravel
-DB_PASSWORD=123
+This API uses JWT (JSON Web Token) for authentication.
+After registering or logging in, include your token in the Authorization header:
 
-# 🔐 JWT Configuration
-JWT_SECRET=your_generated_jwt_secret
+Authorization: Bearer <your_token_here>
 
-🗄️ Database Setup
-# 🎯 Run migrations
-php artisan migrate
+🧱 Database Seeding
 
-# 🌱 Seed with minimum data
+To populate the minimum required data:
+
 php artisan db:seed
-🛠 Development
-Running Tests
+
+
+You can also re-run migrations with fresh data:
+
+php artisan migrate:fresh --seed
+
+🧪 Testing
+
+Run the test suite using:
 
 php artisan test
-Generating Documentation
