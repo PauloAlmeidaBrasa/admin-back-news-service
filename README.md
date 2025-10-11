@@ -1,96 +1,102 @@
-Admin Back News Service API
-A Laravel 10-based REST API for news management with JWT authentication.
+🚀 Admin Back News Service API
+<div align="center">
+A robust Laravel 10 REST API for news management with JWT authentication
+</div>
+📋 Table of Contents
+Features
 
 Prerequisites
-PHP 8.2 or higher
 
-Composer (for non-Docker setup)
+Quick Start
 
-MySQL/PostgreSQL/SQLite database
+Environment Setup
 
-Docker (optional, for containerized setup)
+Installation
 
-Environment Configuration
-Create a .env file in the root directory and configure the following variables:
-# API Configuration
-API_VERSION=1.0
+API Documentation
 
-# Database Configuration
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+Development
 
-# JWT Configuration (generate with: php artisan jwt:secret)
-JWT_SECRET=your_jwt_secret_key
+✨ Features
+Feature	Description
+🔐 JWT Authentication	Secure token-based authentication system
+📰 News Management	Full CRUD operations for news articles
+🐳 Docker Support	Containerized development and production
+🗄️ Database Migrations	Structured database schema management
+🌱 Data Seeding	Pre-populated with essential data
+🔒 Security	Built-in security best practices
 
-Installation & Setup
+🛠 Prerequisites
+Before you begin, ensure you have:
 
-Option 1: Using Docker (Recommended)
+🐘 PHP 8.2 or higher
+
+📦 Composer (for local development)
+
+🗄️ MySQL/PostgreSQL database
+
+🐳 Docker (optional, for containerized setup)
+
+🚀 Quick Start
+Option 1: 🐳 Docker Setup (Recommended)
 Standalone Container:
 
-# Build the Docker image
+# 🔨 Build the Docker image
 docker build -t admin-back-news-service .
-# Run the container
-docker run -d -p 8000:8000 --name admin-back-news-service admin-back-news-service
 
-Using Docker Compose (from orchestrator-new repository): --> https://github.com/PauloAlmeidaBrasa/news-orchestrator
-# Navigate to the orchestrator repository
+# 🏃 Run the container
+docker run -d -p 8000:8000 --name admin-back-news-service admin-back-news-service
+Using Docker Compose:
+
+# 📁 Navigate to the orchestrator repository
 cd orchestrator-new
 
-# Start the services
+# 🚀 Start all services
 docker-compose up -d
+Option 2: 💻 Local Development
 
-Option 2: Local Development (without Docker)
-Install dependencies:
-
+# 1. 📦 Install dependencies
 composer install
 
-Generate application key:
-
+# 2. 🔑 Generate application key
 php artisan key:generate
 
-Generate JWT secret:
-
+# 3. 🎯 Generate JWT secret
 php artisan jwt:secret
 
-Run database migrations and seeders:
-
+# 4. 🗄️ Setup database
 php artisan migrate --seed
-Start the development server:
 
+# 5. 🏃 Start server
 php artisan serve
-The API will be available at http://0.0.0.0:8000
-
-Database Setup
-After configuring your database in the .env file, run:
 
 
-# Run migrations
+⚙️ Environment Setup
+Create a .env file and configure:
+
+env
+# 🚀 API Configuration
+API_VERSION=v1
+
+# 🗄️ Database Configuration
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=news_back_db
+DB_USERNAME=laravel
+DB_PASSWORD=123
+
+# 🔐 JWT Configuration
+JWT_SECRET=your_generated_jwt_secret
+
+🗄️ Database Setup
+# 🎯 Run migrations
 php artisan migrate
 
-# Run seeders to populate with minimum data
+# 🌱 Seed with minimum data
 php artisan db:seed
+🛠 Development
+Running Tests
 
-API Endpoints
-The API follows RESTful conventions and includes JWT authentication. All endpoints are prefixed with the API version (e.g., /api/v1/).
-
-Authentication Endpoints
-POST /api/v1/login - User login
-That endpoint is not covered by jwt, It is used to acquire the JWT token. 
-
-Security
-This API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header for protected routes:
-
-text
-Authorization: Bearer {your_jwt_token}
-Development
-Framework: Laravel 10
-
-Authentication: JWT (tymon/jwt-auth)
-
-Database: Eloquent ORM with migrations
-
-Containerization: Docker
+php artisan test
+Generating Documentation
