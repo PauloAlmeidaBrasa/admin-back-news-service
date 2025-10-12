@@ -18,40 +18,39 @@ class AuthController extends BaseController
     }
 
 /**
- * 
- * @OA\Info(
- *     title="Login Route",
- *     version="1.0.0"
- * )
- * 
- * @OA\Post(
- *     path="/api/v1/login",
- *     summary="Authenticate user and get JWT token",
- *     tags={"Authentication"},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"email","password"},
- *             @OA\Property(property="email", type="string", example="paulo@example.com"),
- *             @OA\Property(property="password", type="string", example="123456")
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful login",
- *         @OA\JsonContent(
- *             @OA\Property(property="access_token", type="string"),
- *             @OA\Property(property="token_type", type="string", example="Bearer"),
- *             @OA\Property(property="expires_in", type="integer", example=86400),
- *             @OA\Property(property="user", type="string", example="Paulo")
- *         )
- *     ),
- *     @OA\Response(
- *         response=401,
- *         description="Invalid credentials"
- *     )
- * )
- */
+* 
+* @OA\Info(
+*     title="Login Route",
+*     version="1.0.0"
+* )
+* @OA\Post(
+*     path="/api/v1/login",
+*     summary="Authenticate user and get JWT token",
+*     tags={"Authentication"},
+*     @OA\RequestBody(
+*         required=true,
+*         @OA\JsonContent(
+*             required={"email","password"},
+*             @OA\Property(property="email", type="string", example="paulo@example.com"),
+*             @OA\Property(property="password", type="string", example="123456")
+*         )
+*     ),
+*     @OA\Response(
+*         response=200,
+*         description="Successful login",
+*         @OA\JsonContent(
+*             @OA\Property(property="access_token", type="string"),
+*             @OA\Property(property="token_type", type="string", example="Bearer"),
+*             @OA\Property(property="expires_in", type="integer", example=86400),
+*             @OA\Property(property="user", type="string", example="Paulo")
+*         )
+*     ),
+*     @OA\Response(
+*         response=401,
+*         description="Invalid credentials"
+*     )
+* )
+*/
     public function login(LoginRequest $request)
     {
 

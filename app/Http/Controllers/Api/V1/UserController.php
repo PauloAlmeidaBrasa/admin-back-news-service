@@ -22,6 +22,40 @@ class UserController extends BaseController {
         $this->userService = $userServ;
     }
 
+/**
+
+ * 
+ * @OA\Get(
+ *     path="/api/v1/user/get-users",
+ *     summary="Get all registered users who belong to the same client_id of the requester",
+ *     tags={"Users"},
+ *     security={{"bearerAuth": {}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of users",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(
+ *                     property="users",
+ *                     type="array",
+ *                     @OA\Items(
+ *                         @OA\Property(property="name", type="string", example="Paulo"),
+ *                         @OA\Property(property="email", type="string", example="paulo@example.com")
+ *                     )
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized"
+ *     )
+ * )
+ */
+
     public function getUsersByClientId(){
 
         $payload = auth()->payload();
@@ -39,6 +73,51 @@ class UserController extends BaseController {
 
         return $this->respondWithSuccess($result,'users');
     }
+
+/**
+ * @OA\Post(
+ *     path="/api/v1/add-user",
+ *     summary="Add a new user",
+ *     description="Create a new user. Requires JWT authentication.",
+ *     tags={"User"},
+ *     security={{"bearerAuth": {}}},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"email", "password", "name"},
+ *             @OA\Property(property="email", type="string", example="user@example.com", description="User’s email address"),
+ *             @OA\Property(property="password", type="string", example="123456", description="User’s password"),
+ *             @OA\Property(property="name", type="string", example="John Doe", description="User’s name")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=200,
+ *         description="✅ Success",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="users", type="string", example="userAdded")
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized - missing or invalid token"
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=422,
+ *         description="Validation error"
+ *     )
+ * )
+ */
+
+
     public function store(){
 
         // Create user
