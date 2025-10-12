@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Services\UserService;
 use App\Http\Requests\UserRequest;
-use App\Http\Controllers\api\v1\BaseController;
+use App\Http\Controllers\Api\V1\BaseController;
 
 
 
