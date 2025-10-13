@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Login Route",
+        "title": "Admin-News-Backend-Api",
         "version": "1.0.0"
     },
     "paths": {
