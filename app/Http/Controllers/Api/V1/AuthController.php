@@ -19,10 +19,6 @@ class AuthController extends BaseController
 
 /**
 * 
-* @OA\Info(
-*     title="Login Route",
-*     version="1.0.0"
-* )
 * @OA\Post(
 *     path="/api/v1/login",
 *     summary="Authenticate user and get JWT token",

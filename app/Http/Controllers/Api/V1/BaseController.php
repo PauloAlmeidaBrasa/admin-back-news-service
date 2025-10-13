@@ -11,6 +11,16 @@ class BaseController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
 
+/**
+* 
+* @OA\Info(
+*     title="Admin-News-Backend-Api",
+*     version="1.0.0"
+* )
+*/
+    public function __construct() {
+    }
+
     protected function sendSuccess($data, string $message = 'Success', int $status = 200): JsonResponse
     {
         return response()->json([
