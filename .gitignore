@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 /public/storage
-/public/swagger-api
+# /public/swagger-api
 /storage/*.key
 /vendor
 .env
