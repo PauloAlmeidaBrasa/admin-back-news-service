@@ -7,23 +7,19 @@ return [
             'api' => [
                 'title' => 'L5 Swagger UI',
             ],
-            'basePath' => '/api/v1',
+
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => 'api/v1/documentation',
+                'api' => 'api/documentation',
             ],
             'paths' => [
                 /*
                  * Edit to include full URL in ui for assets
                  */
-                'use_absolute_path' => true,
-                /*
-                * Edit to set path where swagger ui assets should be stored
-                */
-                'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
-
+                'use_absolute_path' => true, // keeps full URLs
+                'swagger_ui_assets_path' => 'vendor/swagger-api/swagger-ui/dist/',
                 /*
                  * File name of the generated json documentation file
                  */
