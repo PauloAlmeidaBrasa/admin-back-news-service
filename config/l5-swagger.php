@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => 'api/documentation',
+                'api' => 'api/'.env('APP_VERSION','v1').'/documentation',
             ],
             'paths' => [
                 /*
