@@ -4,6 +4,8 @@ namespace App\Services;
 
 
 // use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Models\User;
 
@@ -35,6 +37,28 @@ Class UserService {
             'password' => $userData["password"],
             'client_id' => $userData["client_id"]
         ]);
+    }
+    public function delete($userID,$requesterClientID){
+
+        try {
+            $user = User::find($userID);
+            $userClientID = $user["client_id"];
+            if($userClientID != $requesterClientID){ 
+                return null;
+            }
+
+            $user->delete(); 
+        } catch (\Throwable $th) {
+            Log::error([
+                'errorMessage' =>  $th->getMessage(),
+                'file' => $th->getFile(),
+                'number' => $th->getLine()
+            ]);
+            return false;
+        }
+
+        // dd(vars: $user);
+
         // $query = \DB::getQueryLog();
         // dd($query[0]['query'], $query[0]['bindings']);    
     }

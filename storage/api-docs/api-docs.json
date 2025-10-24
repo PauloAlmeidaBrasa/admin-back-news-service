@@ -73,7 +73,7 @@
         "/api/v1/user/get-users": {
             "get": {
                 "tags": [
-                    "Users"
+                    "get-users"
                 ],
                 "summary": "Get all registered users who belong to the same client_id of the requester",
                 "operationId": "fd584ecd3feb35c37038f610c47d3974",
@@ -126,14 +126,14 @@
                 ]
             }
         },
-        "/api/v1/add-user": {
+        "/api/v1/user/add-user": {
             "post": {
                 "tags": [
-                    "User"
+                    "add-user"
                 ],
                 "summary": "Add a new user",
                 "description": "Create a new user. Requires JWT authentication.",
-                "operationId": "6f5ed76ea68b7a69bd7946ea2784a03f",
+                "operationId": "20d63dea2a3cec21eca63587ddebdee8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -205,6 +205,111 @@
                     }
                 ]
             }
+        },
+        "/api/v1/user/delete": {
+            "post": {
+                "tags": [
+                    "Delete"
+                ],
+                "summary": "Delete a user by ID",
+                "description": "Send the user_ID in the request body to delete the specified user.",
+                "operationId": "0529bd693c2c2f482c1dc22f1a038975",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_ID"
+                                ],
+                                "properties": {
+                                    "user_ID": {
+                                        "description": "User's ID",
+                                        "type": "integer",
+                                        "example": 123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "✅ Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "User ID 123 removed"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing or invalid token"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user service unavailable"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "User not found or the user you are trying to delete doesnt belong to your same client",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found or the user you are trying to delete doesnt belong to your same client"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "tags": [
@@ -213,12 +318,16 @@
             "description": "Authentication"
         },
         {
-            "name": "Users",
-            "description": "Users"
+            "name": "get-users",
+            "description": "get-users"
         },
         {
-            "name": "User",
-            "description": "User"
+            "name": "add-user",
+            "description": "add-user"
+        },
+        {
+            "name": "Delete",
+            "description": "Delete"
         }
     ]
 }
