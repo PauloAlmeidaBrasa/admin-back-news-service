@@ -47,7 +47,7 @@ class BaseController extends Controller
             'user' => $token['user']
         ]);
     }
-    public function respondWithSuccess($data, string $feature, int $statusCode = 200, ?string $message = null)
+    public function respondWithSuccessList($data, string $feature, int $statusCode = 200, ?string $message = null)
     {
         return response()->json([
             'success' => true,
@@ -56,4 +56,14 @@ class BaseController extends Controller
             ],
         ], $statusCode);
     }
+    public function respondWithSuccessSimple($data, string $feature, int $statusCode = 200, ?string $message = null)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                $feature => $data
+            ],
+        ], $statusCode);
+    }
+
 }

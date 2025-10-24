@@ -71,7 +71,7 @@ class UserController extends BaseController {
         },$result);
 
 
-        return $this->respondWithSuccess($result,'users');
+        return $this->respondWithSuccessList($result,'users');
     }
 
 /**
@@ -131,7 +131,7 @@ class UserController extends BaseController {
         ];
 
         $user = $this->userService->create($userData);
-        return $this->respondWithSuccess($user->name,'users');
+        return $this->respondWithSuccessList($user->name,'users');
 
     }
 
@@ -198,35 +198,20 @@ class UserController extends BaseController {
             $payload = auth()->payload();
             $requesterClientID =  $payload->get('client_id');
             $user = $this->userService->delete($userID,$requesterClientID);
-            // dd($user);
+            //  dd($user);
             if(!$user) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'User not found or the user you are trying to delete doesnt belong to your same client',
+                    'message' => 'User not found or the user you are trying to delete, doesnt belong to the same client',
                 ], 403);
             }
+            return $this->respondWithToken($token);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
                 'message' => 'user service unavailable'
             ], 500);
         }
-
-
-
-
-        // Create user
-        // $payload = auth()->payload();
-
-        // $userData = [
-        //     'name'      => $this->userRequest->input("name"),
-        //     'email'     => $this->userRequest->input("email"),
-        //     'password'  => $this->userRequest->input("password"),
-        //     'client_id' => $payload->get('client_id')
-        // ];
-
-        // $user = $this->userService->create($userData);
-        // return $this->respondWithSuccess($user->name,'users');
 
     }
 }
