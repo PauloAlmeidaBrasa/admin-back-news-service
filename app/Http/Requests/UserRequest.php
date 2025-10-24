@@ -22,18 +22,19 @@ class UserRequest extends FormRequest
 
         switch ($routeName) {
             case 'users.all':
-                break;
+            break;
             case 'users.store':
                 $rules = [
                     'email' => 'required|email|unique:users',
                     'password' => 'required|min:6',
                     'name' => 'required|string|max:18'
                 ];
-                case 'users.delete':
+            break;
+            case 'users.delete':
                 $rules = [
                     'user_ID' => 'required'
                 ];
-                break;
+            break;
         
         }
         return $rules;
