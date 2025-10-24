@@ -28,7 +28,7 @@ class UserController extends BaseController {
  * @OA\Get(
  *     path="/api/v1/user/get-users",
  *     summary="Get all registered users who belong to the same client_id of the requester",
- *     tags={"Users"},
+ *     tags={"get-users"},
  *     security={{"bearerAuth": {}}},
  *     @OA\Response(
  *         response=200,
@@ -76,10 +76,10 @@ class UserController extends BaseController {
 
 /**
  * @OA\Post(
- *     path="/api/v1/add-user",
+ *     path="/api/v1/user/add-user",
  *     summary="Add a new user",
  *     description="Create a new user. Requires JWT authentication.",
- *     tags={"User"},
+ *     tags={"add-user"},
  *     security={{"bearerAuth": {}}},
  *
  *     @OA\RequestBody(
@@ -132,6 +132,101 @@ class UserController extends BaseController {
 
         $user = $this->userService->create($userData);
         return $this->respondWithSuccess($user->name,'users');
+
+    }
+
+/**
+ * @OA\Post(
+ *     path="/api/v1/user/delete",
+ *     summary="Delete a user by ID",
+ *     description="Send the user_ID in the request body to delete the specified user.",
+ *     tags={"Delete"},
+ *     security={{"bearerAuth": {}}},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"user_ID"},
+ *             @OA\Property(property="user_ID", type="integer", example=123, description="User's ID")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=200,
+ *         description="✅ Success",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="message", type="string", example="User ID 123 removed")
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized - missing or invalid token"
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="user service unavailable")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=403,
+ *         description="User not found or the user you are trying to delete doesnt belong to your same client",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="User not found or the user you are trying to delete doesnt belong to your same client")
+ *         )
+ *     )
+ * )
+ */
+
+    public function delete(){
+
+
+        try {
+            $userID = $this->userRequest->input('user_ID');
+
+            $payload = auth()->payload();
+            $requesterClientID =  $payload->get('client_id');
+            $user = $this->userService->delete($userID,$requesterClientID);
+            // dd($user);
+            if(!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found or the user you are trying to delete doesnt belong to your same client',
+                ], 403);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'user service unavailable'
+            ], 500);
+        }
+
+
+
+
+        // Create user
+        // $payload = auth()->payload();
+
+        // $userData = [
+        //     'name'      => $this->userRequest->input("name"),
+        //     'email'     => $this->userRequest->input("email"),
+        //     'password'  => $this->userRequest->input("password"),
+        //     'client_id' => $payload->get('client_id')
+        // ];
+
+        // $user = $this->userService->create($userData);
+        // return $this->respondWithSuccess($user->name,'users');
 
     }
 }

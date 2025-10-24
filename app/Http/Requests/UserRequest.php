@@ -29,6 +29,10 @@ class UserRequest extends FormRequest
                     'password' => 'required|min:6',
                     'name' => 'required|string|max:18'
                 ];
+                case 'users.delete':
+                $rules = [
+                    'user_ID' => 'required'
+                ];
                 break;
         
         }
@@ -51,6 +55,7 @@ class UserRequest extends FormRequest
         return [
             'client_id' => 'Client ID is require',
             'email.required' => 'Email is required',
+            'user_ID.required' => 'user_ID missing',
             // 'email.email' => 'Must be a valid email',
             // 'password.required' => 'Password is required',
             // 'password.min' => 'Password must be at least 8 characters',
