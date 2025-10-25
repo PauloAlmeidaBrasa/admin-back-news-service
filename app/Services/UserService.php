@@ -41,18 +41,27 @@ Class UserService {
     public function delete($userID,$requesterClientID){
 
         try {
+
             $user = User::find($userID);
+
+            if(!$user) {
+                return null;
+            }
+
             $userClientID = $user["client_id"];
             if($userClientID != $requesterClientID){ 
                 return null;
             }
 
             $user->delete(); 
+            return $user; 
         } catch (\Throwable $th) {
+            // dd(__LINE__);
+            // dd($th->getMessage());
             Log::error([
                 'errorMessage' =>  $th->getMessage(),
                 'file' => $th->getFile(),
-                'number' => $th->getLine()
+                'numberrrrr' => $th->getLine()
             ]);
             return false;
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
+use Illuminate\Http\JsonResponse;
 
 
 class BaseController extends Controller
@@ -56,13 +57,11 @@ class BaseController extends Controller
             ],
         ], $statusCode);
     }
-    public function respondWithSuccessSimple($data, string $feature, int $statusCode = 200, ?string $message = null)
+    public function respondWithSuccess(string $message, int $statusCode = 200): JsonResponse
     {
         return response()->json([
             'success' => true,
-            'data' => [
-                $feature => $data
-            ],
+            'message' => $message,
         ], $statusCode);
     }
 

@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Services\UserService;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Api\V1\BaseController;
+use Illuminate\Http\JsonResponse;
+
 
 
 
@@ -189,7 +191,7 @@ class UserController extends BaseController {
  * )
  */
 
-    public function delete(){
+    public function delete(): JsonResponse{
 
 
         try {
@@ -198,14 +200,15 @@ class UserController extends BaseController {
             $payload = auth()->payload();
             $requesterClientID =  $payload->get('client_id');
             $user = $this->userService->delete($userID,$requesterClientID);
-            //  dd($user);
             if(!$user) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User not found or the user you are trying to delete, doesnt belong to the same client',
                 ], 403);
             }
-            return $this->respondWithToken($token);
+
+            $msg = "user $user->id removed! ";
+            return $this->respondWithSuccess($msg);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
