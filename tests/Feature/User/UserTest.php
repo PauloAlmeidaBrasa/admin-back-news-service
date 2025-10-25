@@ -68,13 +68,26 @@ class UserTest extends TestCase
             'Authorization' => 'Bearer ' . $invalidToken,
         ])->getJson("/api/v1/user/get-users");
             
-        $response->dump();
+        // $response->dump();
 
-        var_dump($response);
         $response->assertStatus(401)
             ->assertJson([
                 'error'=> 'Token is Invalid'
             ]);
+
+    }
+    public function test_returns_json_on_deleting_user(): void
+    {
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson("/api/v1/user/delete",[ "user_ID" => $this->user->id]);
+            
+
+        $response->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $this->assertStringContainsString('removed', $response->json('message'));
 
     }
  
