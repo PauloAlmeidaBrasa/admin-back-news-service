@@ -18,13 +18,22 @@ Class UserService {
         int $perPage = 15
         ) {
 
-        $query = User::where('client_id', $clientId)
-                    ->orderBy('created_at', 'desc');
+        try {
+            $query = User::where('client_id', $clientId)
+            ->orderBy('created_at', 'desc');
 
         return $paginate 
             ? $query->paginate($perPage)->toArray()
             : $query->get()->toArray();
 
+        } catch (\Throwable $th) {
+             Log::error([
+                'errorMessage' =>  $th->getMessage(),
+                'file' => $th->getFile(),
+                'number' => $th->getLine()
+            ]);
+            return false;
+        }
     }
 
     public function create($userData){
@@ -56,20 +65,14 @@ Class UserService {
             $user->delete(); 
             return $user; 
         } catch (\Throwable $th) {
-            // dd(__LINE__);
-            // dd($th->getMessage());
             Log::error([
                 'errorMessage' =>  $th->getMessage(),
                 'file' => $th->getFile(),
-                'numberrrrr' => $th->getLine()
+                'number' => $th->getLine()
             ]);
             return false;
         }
-
-        // dd(vars: $user);
-
-        // $query = \DB::getQueryLog();
-        // dd($query[0]['query'], $query[0]['bindings']);    
+    
     }
 
 }

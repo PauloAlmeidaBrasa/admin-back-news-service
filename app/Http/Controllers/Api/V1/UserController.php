@@ -65,6 +65,13 @@ class UserController extends BaseController {
 
         $result = $this->userService->allUsersByClientId($client);
 
+        if(!$result){
+            return response()->json([
+                'success' => false,
+                'message' => 'user service unavailable'
+            ], 500);
+        }
+
         $result = array_map(function($user) {
             return (object)[
                 'name' => $user["name"],
