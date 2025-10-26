@@ -13,24 +13,31 @@ use App\Models\User;
 
 Class UserService extends BaseService {
 
-    function allUsersByClientId(
+    /**
+     * @param int $clientId
+     * @return array{
+     *     status: bool,
+     *     code: string,
+     *     message: string,
+     *     data: array<int, array{name: string, email: string, created_date: string}>|null
+     * }
+     */
+    public function allUsersByClientId(
         $clientId,
-        bool $paginate = false, 
+        bool $paginate = false,
         int $perPage = 15
-        ) {
-
+    ) {
         try {
             $query = User::where('client_id', $clientId)
-            ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'desc')
+                ->select(['name', 'email', 'created_at']);
 
-        $data = $paginate 
-            ? $query->paginate($perPage)->toArray()
-            : $query->get()->toArray();
+            $data = $paginate
+                ? $query->paginate($perPage)->toArray()
+                : $query->get()->toArray();
 
             return $this->success($data);
-
         } catch (\Throwable $th) {
-
             Log::error('UserService error: ' . $th->getMessage());
             return $this->error();
         }
