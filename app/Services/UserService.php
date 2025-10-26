@@ -5,12 +5,13 @@ namespace App\Services;
 
 // use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Services\BaseService;
 
 
 use App\Models\User;
 
 
-Class UserService {
+Class UserService extends BaseService {
 
     function allUsersByClientId(
         $clientId,
@@ -22,17 +23,16 @@ Class UserService {
             $query = User::where('client_id', $clientId)
             ->orderBy('created_at', 'desc');
 
-        return $paginate 
+        $data = $paginate 
             ? $query->paginate($perPage)->toArray()
             : $query->get()->toArray();
 
+            return $this->success($data);
+
         } catch (\Throwable $th) {
-             Log::error([
-                'errorMessage' =>  $th->getMessage(),
-                'file' => $th->getFile(),
-                'number' => $th->getLine()
-            ]);
-            return false;
+
+            Log::error('UserService error: ' . $th->getMessage());
+            return $this->error();
         }
     }
 
