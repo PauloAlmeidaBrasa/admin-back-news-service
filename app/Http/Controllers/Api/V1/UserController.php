@@ -130,8 +130,12 @@ class UserController extends BaseController {
             'client_id' => $payload->get('client_id')
         ];
 
-        $user = $this->userService->create($userData);
-        return $this->respondWithSuccessList($user->name,'users');
+        $result = $this->userService->create($userData);
+
+        return match ($result['code']) {
+            'SUCCESS' => $result['message'],
+            'INTERROR' => response()->json($result, 500),
+        };
 
     }
 

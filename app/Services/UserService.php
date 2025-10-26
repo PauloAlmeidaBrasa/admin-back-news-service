@@ -45,14 +45,20 @@ Class UserService extends BaseService {
 
     public function create($userData){
 
-        // \DB::enableQueryLog();
-
-        return User::create([
-            'name' => $userData["name"],
-            'email' => $userData["email"],
-            'password' => $userData["password"],
-            'client_id' => $userData["client_id"]
-        ]);
+        try {
+            
+            $user = User::create([
+                'name' => $userData["name"],
+                'email' => $userData["email"],
+                'password' => $userData["password"],
+                'client_id' => $userData["client_id"]
+            ]);
+            return $this->success(null,'user added '.$user->name);
+        } catch (\Throwable $th) {
+            Log::error('UserService error: ' . $th->getMessage());
+            return $this->error();
+        }
+    
     }
     public function delete($userID,$requesterClientID){
 
