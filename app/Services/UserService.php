@@ -64,26 +64,22 @@ Class UserService extends BaseService {
 
         try {
 
-            $user = User::find($userID);
+            $user = User::find($userID)->where('email_verified_at');
 
             if(!$user) {
-                return null;
+                return $this->error('User not found', 'NOTFOUND');
             }
 
             $userClientID = $user["client_id"];
             if($userClientID != $requesterClientID){ 
-                return null;
+                return $this->error('User is not from the same client', 'NOTFOUND');
             }
 
             $user->delete(); 
-            return $user; 
+            return $this->success(null, 'User deleted successfully');
         } catch (\Throwable $th) {
-            Log::error([
-                'errorMessage' =>  $th->getMessage(),
-                'file' => $th->getFile(),
-                'number' => $th->getLine()
-            ]);
-            return false;
+            Log::error('UserService error: ' . $th->getMessage());
+            return $this->error();
         }
     
     }

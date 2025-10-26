@@ -195,28 +195,24 @@ class UserController extends BaseController {
 
     public function delete(): JsonResponse{
 
+        $userID = $this->userRequest->input('user_ID');
 
-        try {
-            $userID = $this->userRequest->input('user_ID');
+        $payload = auth()->payload();
+        $requesterClientID =  $payload->get('client_id');
 
-            $payload = auth()->payload();
-            $requesterClientID =  $payload->get('client_id');
-            $user = $this->userService->delete($userID,$requesterClientID);
-            if(!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User not found or the user you are trying to delete, doesnt belong to the same client',
-                ], 403);
-            }
+        $result = $this->userService->delete($userID,$requesterClientID);
 
-            $msg = "user $user->id removed! ";
-            return $this->respondWithSuccess($msg);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'user service unavailable'
-            ], 500);
-        }
+        return match ($result['code']) {
+            'SUCCESS' => response()->json($result, 200),
+            'NOTFOUND' => response()->json($result, 404),
+            'INTERROR' => response()->json($result, 500),
+        };
+
+
+        // $msg = "user $user->id removed! ";
+
+
+        // return $this->respondWithSuccess($msg);
 
     }
 }
