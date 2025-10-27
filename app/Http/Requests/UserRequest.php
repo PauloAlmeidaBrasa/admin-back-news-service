@@ -35,6 +35,11 @@ class UserRequest extends FormRequest
                     'user_ID' => 'required'
                 ];
             break;
+            case 'users.update':
+                $rules = [
+                    'user_ID' => 'required'
+                ];
+            break;
         
         }
         return $rules;

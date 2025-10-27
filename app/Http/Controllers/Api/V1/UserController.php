@@ -210,6 +210,22 @@ class UserController extends BaseController {
 
 
     }
+
+       public function update(): JsonResponse{
+
+        $userFieldsToUpdate = $this->userRequest->input();
+
+        // dd($userFieldsToUpdate);
+
+        $result = $this->userService->update($userFieldsToUpdate);
+
+        return match ($result['code']) {
+            'SUCCESS'  => response()->json($result, 200),
+            'NOTFOUND' => response()->json($result, 404),
+            'INTERROR' => response()->json($result, 500),
+        };
+
+    }
 }
 
 

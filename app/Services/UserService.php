@@ -84,4 +84,39 @@ Class UserService extends BaseService {
     
     }
 
+    public function update($userFields){
+
+        try {
+
+            $user = User::find($userFields['user_ID']);
+
+            if(!$user) {
+                return $this->error('User not found', 'NOTFOUND');
+            }
+
+            $payload = auth()->payload();
+            $requesterClientID =  $payload->get('client_id');
+
+
+            $userClientID = $user->client_id;
+            if($userClientID != $requesterClientID){ 
+                return $this->error('User is not from the same client', 'NOTFOUND');
+            }
+
+            $fieldsToUpdate = array_filter(
+                $userFields,
+                fn($key) => in_array($key, $user->getFillable()),
+                ARRAY_FILTER_USE_KEY
+            );
+
+
+            $user->update($fieldsToUpdate); 
+            return $this->success(null, 'User updated successfully');
+        } catch (\Throwable $th) {
+            Log::error('UserService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
+            return $this->error();
+        }
+    
+    }
+
 }
