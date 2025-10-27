@@ -23,4 +23,15 @@ class BaseService
             'data' => $data,
         ];
     }
+    protected function checkSameClient(int $userClientID)
+    {
+
+        $payload = auth()->payload();
+        $requesterClientID =  $payload->get('client_id');
+
+        if($userClientID != $requesterClientID){
+            return false;
+        }
+        return true;
+    }
 }

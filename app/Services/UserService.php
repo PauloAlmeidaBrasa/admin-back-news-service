@@ -30,7 +30,7 @@ Class UserService extends BaseService {
         try {
             $query = User::where('client_id', $clientId)
                 ->orderBy('created_at', 'desc')
-                ->select(['id','name', 'email', 'created_at']);
+                ->select(['id','name', 'email', 'created_at', 'client_ID']);
 
             $data = $paginate
                 ? $query->paginate($perPage)->toArray()
@@ -70,10 +70,12 @@ Class UserService extends BaseService {
                 return $this->error('User not found', 'NOTFOUND');
             }
 
-            $userClientID = $user->client_id;
-            if($userClientID != $requesterClientID){ 
+            $checkSameClient = $this->checkSameClient($user->client_id);
+
+            if(!$checkSameClient) { 
                 return $this->error('User is not from the same client', 'NOTFOUND');
             }
+
 
             $user->delete(); 
             return $this->success(null, 'User deleted successfully');
@@ -94,12 +96,11 @@ Class UserService extends BaseService {
                 return $this->error('User not found', 'NOTFOUND');
             }
 
-            $payload = auth()->payload();
-            $requesterClientID =  $payload->get('client_id');
+            // dd( $user->client_id);
 
+            $checkSameClient = $this->checkSameClient($user->client_id);
 
-            $userClientID = $user->client_id;
-            if($userClientID != $requesterClientID){ 
+            if(!$checkSameClient) { 
                 return $this->error('User is not from the same client', 'NOTFOUND');
             }
 
