@@ -5,13 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Client;
 use App\Models\User;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected $client;
     protected $user;
@@ -20,7 +20,8 @@ class UserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
- 
+        $this->artisan('migrate');
+        $this->artisan('db:seed');
         $this->client = Client::factory()->create();
 
         $this->user = User::factory()->create([
@@ -35,7 +36,7 @@ class UserTest extends TestCase
             'email' => 'test@example.com',
             'password' => '123456'
         ]);
-        
+
         $this->token = $response->json('access_token');
     }
     public function test_returns_json_object_with_users_data(): void
@@ -44,7 +45,6 @@ class UserTest extends TestCase
             'Authorization' => 'Bearer ' . $this->token,
         ])->getJson("/api/v1/user/get-users");
 
-        // $response->dump();
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -58,7 +58,6 @@ class UserTest extends TestCase
                     ]
                 ],
             ]);
-            // ->assertJsonCount(3, 'data.users');
 
     }
     public function test_returns_unauthorized_for_invalid_token(): void
@@ -68,7 +67,6 @@ class UserTest extends TestCase
             'Authorization' => 'Bearer ' . $invalidToken,
         ])->getJson("/api/v1/user/get-users");
             
-        // $response->dump();
 
         $response->assertStatus(401)
             ->assertJson([
@@ -81,13 +79,13 @@ class UserTest extends TestCase
         
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson("/api/v1/user/delete",[ "user_ID" => $this->user->id]);
+        ])->postJson("/api/v1/user/delete",[ "user_ID" => $this->user->id ]);
             
 
         $response->assertStatus(200)
-            ->assertJsonPath('success', true);
+            ->assertJsonPath('code', 'SUCCESS');
 
-        $this->assertStringContainsString('removed', $response->json('message'));
+        $this->assertStringContainsString('deleted', $response->json('message'));
 
     }
  

@@ -203,16 +203,11 @@ class UserController extends BaseController {
         $result = $this->userService->delete($userID,$requesterClientID);
 
         return match ($result['code']) {
-            'SUCCESS' => response()->json($result, 200),
+            'SUCCESS'  => response()->json($result, 200),
             'NOTFOUND' => response()->json($result, 404),
             'INTERROR' => response()->json($result, 500),
         };
 
-
-        // $msg = "user $user->id removed! ";
-
-
-        // return $this->respondWithSuccess($msg);
 
     }
 }

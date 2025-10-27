@@ -30,7 +30,7 @@ Class UserService extends BaseService {
         try {
             $query = User::where('client_id', $clientId)
                 ->orderBy('created_at', 'desc')
-                ->select(['name', 'email', 'created_at']);
+                ->select(['id','name', 'email', 'created_at']);
 
             $data = $paginate
                 ? $query->paginate($perPage)->toArray()
@@ -55,7 +55,7 @@ Class UserService extends BaseService {
             ]);
             return $this->success(null,'user added '.$user->name);
         } catch (\Throwable $th) {
-            Log::error('UserService error: ' . $th->getMessage());
+            Log::error('UserService error: ' . $th->getMessage().''. $th->getLine());
             return $this->error();
         }
     
@@ -64,13 +64,13 @@ Class UserService extends BaseService {
 
         try {
 
-            $user = User::find($userID)->where('email_verified_at');
+            $user = User::find($userID);
 
             if(!$user) {
                 return $this->error('User not found', 'NOTFOUND');
             }
 
-            $userClientID = $user["client_id"];
+            $userClientID = $user->client_id;
             if($userClientID != $requesterClientID){ 
                 return $this->error('User is not from the same client', 'NOTFOUND');
             }
@@ -78,7 +78,7 @@ Class UserService extends BaseService {
             $user->delete(); 
             return $this->success(null, 'User deleted successfully');
         } catch (\Throwable $th) {
-            Log::error('UserService error: ' . $th->getMessage());
+            Log::error('UserService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
             return $this->error();
         }
     
