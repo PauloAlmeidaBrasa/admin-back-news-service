@@ -88,5 +88,77 @@ class UserTest extends TestCase
         $this->assertStringContainsString('deleted', $response->json('message'));
 
     }
+
+    /** @test */
+    public function test_updates_user_data_successfully()
+    {
+        $payload = [
+            'user_ID' => $this->user->id,
+            'name' => 'New Name',
+            'email' => 'new@example.com',
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+
+
+        $response->assertStatus(200)
+            ->assertJsonPath('code', 'SUCCESS')
+            ->assertJson([
+                'message' => 'User updated successfully',
+            ]);
+
+        // Ensure DB reflects the change
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'name' => 'New Name',
+            'email' => 'new@example.com',
+        ]);
+
+        
+    }
+
+        /** @test */
+    public function test_returns_error_if_user_not_found()
+    {
+        $payload = [
+            'user_ID' => 999999,
+            'name' => 'Fake User',
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+
+        $response->assertStatus(404)
+            ->assertJsonPath('code', 'NOTFOUND')
+            ->assertJson([
+                'message' => 'User not found',
+            ]);
+    }
+    public function test_returns_generic_error_on_internal_server_errors() {
+
+        $this->mock(\App\Services\UserService::class, function ($mock) {
+        $mock->shouldReceive('update')
+             ->andThrow(new \Exception('Internal Server Error'));
+        });
+
+        $payload = [
+            'user_ID' => 999,
+            'name' => 'Test Name'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+
+        $response->assertStatus(500)
+            ->assertJson([
+                'message' => 'Internal Server Error'
+            ]);
+
+    }
+
  
 }
