@@ -22,8 +22,9 @@ Class UserService extends BaseService {
      *     data: array<int, array{name: string, email: string, created_date: string}>|null
      * }
      */
-    public function allUsersByClientId(
+    public function usersByClientId(
         $clientId,
+        ?int $userId = null,
         bool $paginate = false,
         int $perPage = 15
     ) {
@@ -31,6 +32,10 @@ Class UserService extends BaseService {
             $query = User::where('client_id', $clientId)
                 ->orderBy('created_at', 'desc')
                 ->select(['id','name', 'email', 'created_at', 'client_ID']);
+
+            if (!is_null($userId)) {
+                $query->where('id', $userId);
+            }
 
             $data = $paginate
                 ? $query->paginate($perPage)->toArray()

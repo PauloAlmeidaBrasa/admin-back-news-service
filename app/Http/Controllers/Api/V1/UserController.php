@@ -63,7 +63,12 @@ class UserController extends BaseController {
         $payload = auth()->payload();
         $client =  $payload->get('client_id');
 
-        $result = $this->userService->allUsersByClientId($client);
+        $userID = null;
+        if($this->userRequest->input("user_ID")){
+            $userID = $this->userRequest->input("user_ID");
+        }
+
+        $result = $this->userService->usersByClientId($client,$userID);
 
 
         return match ($result['code']) {
