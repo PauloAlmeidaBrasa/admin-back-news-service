@@ -215,8 +215,76 @@ class UserController extends BaseController {
 
 
     }
+/**
+ * @OA\Patch(
+ *     path="/api/v1/user/update",
+ *     summary="Update user data",
+ *     tags={"Update users"},
+ *     security={{"bearerAuth": {}}},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"user_ID"},
+ *             @OA\Property(
+ *                 property="user_ID",
+ *                 type="integer",
+ *                 example=123,
+ *                 description="User ID to update"
+ *             ),
+ *             @OA\Property(
+ *                 property="name",
+ *                 type="string",
+ *                 example="John Doe",
+ *                 description="Optional new user name"
+ *             ),
+ *             @OA\Property(
+ *                 property="email",
+ *                 type="string",
+ *                 format="email",
+ *                 example="john.doe@example.com",
+ *                 description="Optional new user email"
+ *             ),
+ *             @OA\Property(
+ *                 property="password",
+ *                 type="string",
+ *                 example="newSecurePassword123",
+ *                 description="Optional new password"
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=200,
+ *         description="User updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="message", type="string", example="User ID 123 updated successfully")
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="User service unavailable")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized"
+ *     )
+ * )
+ */
 
-       public function update(): JsonResponse{
+
+    public function update(): JsonResponse{
 
         $userFieldsToUpdate = $this->userRequest->input();
 
