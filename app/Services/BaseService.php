@@ -34,4 +34,12 @@ class BaseService
         }
         return true;
     }
+
+        protected function requesterClientId(): int
+    {
+
+        $payload = auth()->payload();
+        return $payload->get('client_id');
+    }
+
 }

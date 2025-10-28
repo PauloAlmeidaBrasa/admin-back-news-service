@@ -15,7 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
+
+            $table->foreign('client_id')
+                ->references('id')
+                ->on('client')
+                ->onDelete('cascade');
         });
     }
 

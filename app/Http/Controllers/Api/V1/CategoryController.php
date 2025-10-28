@@ -75,11 +75,8 @@ class CategoryController extends BaseController
         $payload = auth()->payload();
 
         $categoryData = [
-            'title'      => $this->categoryRequest->input("title"),
-            'subtitle'     => $this->categoryRequest->input("subtitle"),
-            'text'  => $this->categoryRequest->input("text"),
-            'category' => $this->categoryRequest->input('category'),
-            'client_id' => $payload["client_id"]
+            'name'      => $this->categoryRequest->input("name"),
+            'description'     => $this->categoryRequest->input("description")
         ];
 
         $result = $this->categoryService->create($categoryData);
