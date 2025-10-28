@@ -36,7 +36,7 @@ class CategoryRequest extends FormRequest
             break;
             case 'category.update':
                 $rules = [
-                    'news_ID' => 'required',
+                    'category_ID' => 'required',
                 ];
             break;
         }

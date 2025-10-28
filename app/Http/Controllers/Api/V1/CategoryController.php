@@ -286,9 +286,9 @@ class CategoryController extends BaseController
 
     public function delete(): JsonResponse{
 
-        $userID = $this->categoryRequest->input('category_ID');
+        $categoryID = $this->categoryRequest->input('category_ID');
 
-        $result = $this->categoryService->delete($userID);
+        $result = $this->categoryService->delete($categoryID);
 
         return match ($result['code']) {
             'SUCCESS'  => response()->json($result, 200),

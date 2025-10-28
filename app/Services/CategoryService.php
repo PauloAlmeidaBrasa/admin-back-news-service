@@ -49,18 +49,16 @@ Class CategoryService extends BaseService {
         }
     }
 
-    public function create($userData){
+    public function create($categoryData){
 
         try {
             
-            $user = Category::create([
-                'title' => $userData["title"],
-                'subtitle' => $userData["subtitle"],
-                'text' => $userData["text"],
-                'category' => $userData["category"],
-                'client_id' => $userData["client_id"]
+            $category = Category::create([
+                'name' => $categoryData["name"],
+                'description' => $categoryData["name"],
+                'client_id'  => $this->requesterClientId()
             ]);
-            return $this->success(null,'category added '.$user->name);
+            return $this->success(null,'category added '.$category->name);
         } catch (\Throwable $th) {
             Log::error('categoryService error: ' . $th->getMessage().''. $th->getLine());
             return $this->error();
