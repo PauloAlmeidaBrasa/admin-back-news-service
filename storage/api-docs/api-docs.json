@@ -310,6 +310,106 @@
                     }
                 ]
             }
+        },
+        "/api/v1/user/update": {
+            "patch": {
+                "tags": [
+                    "Update users"
+                ],
+                "summary": "Update user data",
+                "operationId": "b8eb619eff0c6be3b6efe0be1a9cbed7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_ID"
+                                ],
+                                "properties": {
+                                    "user_ID": {
+                                        "description": "User ID to update",
+                                        "type": "integer",
+                                        "example": 123
+                                    },
+                                    "name": {
+                                        "description": "Optional new user name",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "description": "Optional new user email",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Optional new password",
+                                        "type": "string",
+                                        "example": "newSecurePassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "User ID 123 updated successfully"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User service unavailable"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "tags": [
@@ -328,6 +428,10 @@
         {
             "name": "Delete",
             "description": "Delete"
+        },
+        {
+            "name": "Update users",
+            "description": "Update users"
         }
     ]
 }
