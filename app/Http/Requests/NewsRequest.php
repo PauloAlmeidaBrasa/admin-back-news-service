@@ -23,24 +23,12 @@ class NewsRequest extends FormRequest
         switch ($routeName) {
             case 'news.all':
             break;
-            // case 'news.store':
-            //     $rules = [
-            //         'email' => 'required|email|unique:users',
-            //         'password' => 'required|min:6',
-            //         'name' => 'required|string|max:18'
-            //     ];
-            // break;
-            // case 'news.delete':
-            //     $rules = [
-            //         'user_ID' => 'required'
-            //     ];
-            // break;
-            // case 'news.update':
-            //     $rules = [
-            //         'user_ID' => 'required'
-            //     ];
-            // break;
-        
+            case 'news.store':
+                $rules = [
+                    'title' => 'required',
+                    'category' => 'required',
+                ];
+            break;
         }
         return $rules;
     }
@@ -59,12 +47,8 @@ class NewsRequest extends FormRequest
     public function messages()
     {
         return [
-            'client_id' => 'Client ID is require',
-            'email.required' => 'Email is required',
-            'user_ID.required' => 'user_ID missing',
-            // 'email.email' => 'Must be a valid email',
-            // 'password.required' => 'Password is required',
-            // 'password.min' => 'Password must be at least 8 characters',
+            'title.required' => 'news title is missing',
+            'category.required' => 'category ID is missing'
         ];
     }
 }

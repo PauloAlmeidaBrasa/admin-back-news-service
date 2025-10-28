@@ -9,7 +9,7 @@ Route::prefix('news')->group(function () {
      // Admin routes
     Route::get('/get-news', [NewsController::class,'newsByClientId'])->middleware(['access.level:3'])->name('news.all');
     Route::post('/add-news', [NewsController::class,'store'])->middleware(['access.level:3'])->name('news.store');
-    // Route::post('/delete', [UserController::class,'delete'])->middleware(['access.level:3'])->name('users.delete');
+    Route::post('/delete', [UserController::class,'delete'])->middleware(['access.level:3'])->name('news.delete');
     // Route::patch('/update/{id}', [UserController::class,'update'])->middleware(['access.level:3'])->name('users.update');
 });
 

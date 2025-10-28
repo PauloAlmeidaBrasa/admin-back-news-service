@@ -56,7 +56,8 @@ Class NewsService extends BaseService {
                 'title' => $userData["title"],
                 'subtitle' => $userData["subtitle"],
                 'text' => $userData["text"],
-                'category' => $userData["category"]
+                'category' => $userData["category"],
+                'client_id' => $userData["client_id"]
             ]);
             return $this->success(null,'news added '.$user->name);
         } catch (\Throwable $th) {
