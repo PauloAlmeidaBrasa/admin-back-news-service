@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NewsRequest;
 use App\Services\NewsService;
 use App\Http\Controllers\Api\V1\BaseController;
+use Illuminate\Http\JsonResponse;
+
 
 class NewsController extends BaseController
 {
@@ -76,7 +78,8 @@ class NewsController extends BaseController
             'title'      => $this->newsRequest->input("title"),
             'subtitle'     => $this->newsRequest->input("subtitle"),
             'text'  => $this->newsRequest->input("text"),
-            'category' => $payload->get('category')
+            'category' => $this->newsRequest->input('category'),
+            'client_id' => $payload["client_id"]
         ];
 
         $result = $this->newsService->create($newsData);
@@ -147,12 +150,88 @@ class NewsController extends BaseController
 
     }
 
+
     /**
-     * Update the specified resource in storage.
-     */
+ * @OA\Patch(
+ *     path="/api/v1/news/update",
+ *     summary="Update news data",
+ *     tags={"Update newss"},
+ *     security={{"bearerAuth": {}}},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"news_ID"},
+ *             @OA\Property(
+ *                 property="news_ID",
+ *                 type="integer",
+ *                 example=123,
+ *                 description="news ID to update"
+ *             ),
+ *             @OA\Property(
+ *                 property="name",
+ *                 type="string",
+ *                 example="John Doe",
+ *                 description="Optional new news name"
+ *             ),
+ *             @OA\Property(
+ *                 property="email",
+ *                 type="string",
+ *                 format="email",
+ *                 example="john.doe@example.com",
+ *                 description="Optional new news email"
+ *             ),
+ *             @OA\Property(
+ *                 property="password",
+ *                 type="string",
+ *                 example="newSecurePassword123",
+ *                 description="Optional new password"
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=200,
+ *         description="news updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="message", type="string", example="news ID 123 updated successfully")
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="news service unavailable")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized"
+ *     )
+ * )
+ */
+
     public function update(Request $request, News $news)
     {
-        //
+        $newsFieldsToUpdate = $this->newsRequest->input();
+
+
+        $result = $this->newsService->update($newsFieldsToUpdate);
+
+        return match ($result['code']) {
+            'SUCCESS'  => response()->json($result, 200),
+            'NOTFOUND' => response()->json($result, 404),
+            'INTERROR' => response()->json($result, 500),
+        };
+
     }
 
     /**
@@ -161,5 +240,74 @@ class NewsController extends BaseController
     public function destroy(News $news)
     {
         //
+    }
+
+    /**
+ * @OA\Post(
+ *     path="/api/v1/news/delete",
+ *     summary="Delete a news by ID",
+ *     description="Send the news_ID in the request body to delete the specified news.",
+ *     tags={"Delete"},
+ *     security={{"bearerAuth": {}}},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"news_ID"},
+ *             @OA\Property(property="news_ID", type="integer", example=123, description="news's ID")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=200,
+ *         description="✅ Success",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="object",
+ *                 @OA\Property(property="message", type="string", example="news ID 123 removed")
+ *             )
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized - missing or invalid token"
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="news service unavailable")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=403,
+ *         description="news not found or the news you are trying to delete doesnt belong to your same client",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="news not found or the news you are trying to delete doesnt belong to your same client")
+ *         )
+ *     )
+ * )
+ */
+
+    public function delete(): JsonResponse{
+
+        $userID = $this->newsRequest->input('news_ID');
+
+        $result = $this->newsService->delete($userID);
+
+        return match ($result['code']) {
+            'SUCCESS'  => response()->json($result, 200),
+            'NOTFOUND' => response()->json($result, 404),
+            'INTERROR' => response()->json($result, 500),
+        };
+
+
     }
 }
