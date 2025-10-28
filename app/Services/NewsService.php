@@ -66,31 +66,31 @@ Class NewsService extends BaseService {
         }
     
     }
-    // public function delete($userID,$requesterClientID){
+    public function delete($newsID){
 
-    //     try {
+        try {
 
-    //         $user = User::find($userID);
+            $news = news::find($newsID);
 
-    //         if(!$user) {
-    //             return $this->error('User not found', 'NOTFOUND');
-    //         }
+            if(!$news) {
+                return $this->error('news not found', 'NOTFOUND');
+            }
 
-    //         $checkSameClient = $this->checkSameClient($user->client_id);
+            $checkSameClient = $this->checkSameClient($news->client_id);
 
-    //         if(!$checkSameClient) { 
-    //             return $this->error('User is not from the same client', 'NOTFOUND');
-    //         }
+            if(!$checkSameClient) { 
+                return $this->error('news is not from the same client', 'NOTFOUND');
+            }
 
 
-    //         $user->delete(); 
-    //         return $this->success(null, 'User deleted successfully');
-    //     } catch (\Throwable $th) {
-    //         Log::error('UserService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
-    //         return $this->error();
-    //     }
+            $news->delete(); 
+            return $this->success(null, 'news deleted successfully');
+        } catch (\Throwable $th) {
+            Log::error('newsService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
+            return $this->error();
+        }
     
-    // }
+    }
 
     // public function update($userFields){
 

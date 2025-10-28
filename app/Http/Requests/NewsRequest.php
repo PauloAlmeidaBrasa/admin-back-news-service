@@ -29,6 +29,11 @@ class NewsRequest extends FormRequest
                     'category' => 'required',
                 ];
             break;
+              case 'news.delete':
+                $rules = [
+                    'news_ID' => 'required',
+                ];
+            break;
         }
         return $rules;
     }
@@ -48,7 +53,8 @@ class NewsRequest extends FormRequest
     {
         return [
             'title.required' => 'news title is missing',
-            'category.required' => 'category ID is missing'
+            'category.required' => 'category ID is missing',
+            'news_id.required' => 'news id is missing'
         ];
     }
 }
