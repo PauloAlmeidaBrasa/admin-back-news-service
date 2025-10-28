@@ -288,7 +288,6 @@ class UserController extends BaseController {
 
         $userFieldsToUpdate = $this->userRequest->input();
 
-        // dd($userFieldsToUpdate);
 
         $result = $this->userService->update($userFieldsToUpdate);
 

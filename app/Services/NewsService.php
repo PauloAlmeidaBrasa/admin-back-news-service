@@ -92,38 +92,37 @@ Class NewsService extends BaseService {
     
     }
 
-    // public function update($userFields){
+    public function update($newsFields){
 
-    //     try {
+        try {
 
-    //         $user = User::find($userFields['user_ID']);
+            $news = News::find($newsFields['news_ID']);
 
-    //         if(!$user) {
-    //             return $this->error('User not found', 'NOTFOUND');
-    //         }
-
-    //         // dd( $user->client_id);
-
-    //         $checkSameClient = $this->checkSameClient($user->client_id);
-
-    //         if(!$checkSameClient) { 
-    //             return $this->error('User is not from the same client', 'NOTFOUND');
-    //         }
-
-    //         $fieldsToUpdate = array_filter(
-    //             $userFields,
-    //             fn($key) => in_array($key, $user->getFillable()),
-    //             ARRAY_FILTER_USE_KEY
-    //         );
+            if(!$news) {
+                return $this->error('news not found', 'NOTFOUND');
+            }
 
 
-    //         $user->update($fieldsToUpdate); 
-    //         return $this->success(null, 'User updated successfully');
-    //     } catch (\Throwable $th) {
-    //         Log::error('UserService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
-    //         return $this->error();
-    //     }
+            $checkSameClient = $this->checkSameClient($news->client_id);
+
+            if(!$checkSameClient) { 
+                return $this->error('news is not from the same client', 'NOTFOUND');
+            }
+
+            $fieldsToUpdate = array_filter(
+                $newsFields,
+                fn($key) => in_array($key, $news->getFillable()),
+                ARRAY_FILTER_USE_KEY
+            );
+
+
+            $news->update($fieldsToUpdate); 
+            return $this->success(null, 'news updated successfully');
+        } catch (\Throwable $th) {
+            Log::error('newsService error: ' . $th->getMessage().''. $th->getFile() .''. $th->getLine());
+            return $this->error();
+        }
     
-    // }
+    }
 
 }

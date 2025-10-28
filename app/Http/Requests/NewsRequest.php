@@ -34,6 +34,11 @@ class NewsRequest extends FormRequest
                     'news_ID' => 'required',
                 ];
             break;
+            case 'news.update':
+                $rules = [
+                    'news_ID' => 'required',
+                ];
+            break;
         }
         return $rules;
     }
