@@ -70,6 +70,349 @@
                 }
             }
         },
+        "/api/v1/category/add-category": {
+            "post": {
+                "tags": [
+                    "add-category"
+                ],
+                "summary": "Add a new category",
+                "description": "Create a new category. Requires JWT authentication.",
+                "operationId": "caf00c5c65cfbb1211bd28d6a16f0e62",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "category title",
+                                        "type": "string",
+                                        "example": "category 1"
+                                    },
+                                    "category": {
+                                        "description": "category ID",
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "✅ Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "categoryAdded"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing or invalid token"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/category/get-category": {
+            "get": {
+                "tags": [
+                    "get-category"
+                ],
+                "summary": "Get all registered category who belong to the same client_id of the requester",
+                "operationId": "f75809a479c8dc8e62b9782689fcf7a9",
+                "responses": {
+                    "200": {
+                        "description": "List of category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "category": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "category 1"
+                                                            },
+                                                            "subtitle": {
+                                                                "type": "string",
+                                                                "example": "subtitle 1"
+                                                            },
+                                                            "text": {
+                                                                "type": "string",
+                                                                "example": "text 1"
+                                                            },
+                                                            "category": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/category/update": {
+            "patch": {
+                "tags": [
+                    "Update categorys"
+                ],
+                "summary": "Update category data",
+                "operationId": "171cdf67e67a9446f54711ebc954e433",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_ID"
+                                ],
+                                "properties": {
+                                    "category_ID": {
+                                        "description": "category ID to update",
+                                        "type": "integer",
+                                        "example": 123
+                                    },
+                                    "name": {
+                                        "description": "Optional new category name",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "description": "Optional new category email",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Optional new password",
+                                        "type": "string",
+                                        "example": "categoryecurePassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "category updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "category ID 123 updated successfully"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "category service unavailable"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/category/delete": {
+            "post": {
+                "tags": [
+                    "Delete"
+                ],
+                "summary": "Delete a category by ID",
+                "description": "Send the category_ID in the request body to delete the specified category.",
+                "operationId": "cca9ce136785b287ddd24828322493e5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_ID"
+                                ],
+                                "properties": {
+                                    "category_ID": {
+                                        "description": "category's ID",
+                                        "type": "integer",
+                                        "example": 123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "✅ Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "category ID 123 removed"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing or invalid token"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "category service unavailable"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "category not found or the category you are trying to delete doesnt belong to your same client",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "category not found or the category you are trying to delete doesnt belong to your same client"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/news/add-news": {
             "post": {
                 "tags": [
@@ -761,6 +1104,22 @@
             "description": "Authentication"
         },
         {
+            "name": "add-category",
+            "description": "add-category"
+        },
+        {
+            "name": "get-category",
+            "description": "get-category"
+        },
+        {
+            "name": "Update categorys",
+            "description": "Update categorys"
+        },
+        {
+            "name": "Delete",
+            "description": "Delete"
+        },
+        {
             "name": "add-news",
             "description": "add-news"
         },
@@ -771,10 +1130,6 @@
         {
             "name": "Update newss",
             "description": "Update newss"
-        },
-        {
-            "name": "Delete",
-            "description": "Delete"
         },
         {
             "name": "get-users",
