@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Requests\NewsRequest;
-use App\Services\NewsService;
+use App\Http\Requests\CategoryRequest;
+use App\Services\CategoryService;
 use App\Http\Controllers\Api\V1\BaseController;
 use Illuminate\Http\JsonResponse;
 
@@ -18,7 +18,7 @@ class CategoryController extends BaseController
 
     protected $categoryService;
 
-    function __construct(categoryRequest $categoryReq, categoryService $categoryServ)
+    function __construct(categoryRequest $categoryReq, CategoryService $categoryServ)
     {
         $this->categoryRequest = $categoryReq;
         $this->categoryService = $categoryServ;
@@ -130,7 +130,6 @@ class CategoryController extends BaseController
  */
 
     public function categoryByClientId(){
-
         $payload = auth()->payload();
         $client =  $payload->get('client_id');
 

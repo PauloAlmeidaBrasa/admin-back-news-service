@@ -19,7 +19,7 @@ require  __DIR__.'/LoginRouter.php';
 Route::middleware(['jwt.verify'])->group(function () {
     require __DIR__.'/UserRouter.php';
     require __DIR__.'/NewsRouter.php';
-
+    require __DIR__.'/CategoryRouter.php';
 });
 
 
