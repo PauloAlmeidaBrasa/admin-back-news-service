@@ -18,6 +18,7 @@ require  __DIR__.'/LoginRouter.php';
 // Authenticated routes
 Route::middleware(['jwt.verify'])->group(function () {
     require __DIR__.'/UserRouter.php';
+    require __DIR__.'/NewsRouter.php';
 
 });
 
