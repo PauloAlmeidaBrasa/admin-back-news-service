@@ -48,23 +48,23 @@ Class NewsService extends BaseService {
         }
     }
 
-    // public function create($userData){
+    public function create($userData){
 
-    //     try {
+        try {
             
-    //         $user = User::create([
-    //             'name' => $userData["name"],
-    //             'email' => $userData["email"],
-    //             'password' => $userData["password"],
-    //             'client_id' => $userData["client_id"]
-    //         ]);
-    //         return $this->success(null,'user added '.$user->name);
-    //     } catch (\Throwable $th) {
-    //         Log::error('UserService error: ' . $th->getMessage().''. $th->getLine());
-    //         return $this->error();
-    //     }
+            $user = News::create([
+                'title' => $userData["title"],
+                'subtitle' => $userData["subtitle"],
+                'text' => $userData["text"],
+                'category' => $userData["category"]
+            ]);
+            return $this->success(null,'news added '.$user->name);
+        } catch (\Throwable $th) {
+            Log::error('newsService error: ' . $th->getMessage().''. $th->getLine());
+            return $this->error();
+        }
     
-    // }
+    }
     // public function delete($userID,$requesterClientID){
 
     //     try {

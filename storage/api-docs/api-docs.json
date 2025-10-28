@@ -70,6 +70,144 @@
                 }
             }
         },
+        "/api/v1/news/add-news": {
+            "post": {
+                "tags": [
+                    "add-news"
+                ],
+                "summary": "Add a new news",
+                "description": "Create a new news. Requires JWT authentication.",
+                "operationId": "c5eacf6d152246ea3c63964097bc8b0f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "news title",
+                                        "type": "string",
+                                        "example": "news 1"
+                                    },
+                                    "category": {
+                                        "description": "category ID",
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "✅ Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "news": {
+                                                    "type": "string",
+                                                    "example": "newsAdded"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - missing or invalid token"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/news/get-news": {
+            "get": {
+                "tags": [
+                    "get-news"
+                ],
+                "summary": "Get all registered news who belong to the same client_id of the requester",
+                "operationId": "0cb6b12911a33e937e75156a081a3cbf",
+                "responses": {
+                    "200": {
+                        "description": "List of news",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "news": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "news 1"
+                                                            },
+                                                            "subtitle": {
+                                                                "type": "string",
+                                                                "example": "subtitle 1"
+                                                            },
+                                                            "text": {
+                                                                "type": "string",
+                                                                "example": "text 1"
+                                                            },
+                                                            "category": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/get-users": {
             "get": {
                 "tags": [
@@ -416,6 +554,14 @@
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "add-news",
+            "description": "add-news"
+        },
+        {
+            "name": "get-news",
+            "description": "get-news"
         },
         {
             "name": "get-users",
