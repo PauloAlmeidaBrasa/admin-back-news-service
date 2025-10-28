@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             \Database\Seeders\ClientSeeder::class,
             \Database\Seeders\UserSeeder::class,
+            \Database\Seeders\NewsSeeder::class,
             
             // Add other seeders here as needed:
             // \Database\Seeders\PostSeeder::class,
