@@ -2,7 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\user\UserController;
 
 
 Route::prefix('user')->group(function () {

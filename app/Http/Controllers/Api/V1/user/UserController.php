@@ -1,10 +1,10 @@
 <?php
 
 // namespace App\Http\Controllers;
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api\V1\user;
 
 
-use App\Services\UserService;
+use App\Services\user\UserService;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Api\V1\BaseController;
 use Illuminate\Http\JsonResponse;
