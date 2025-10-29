@@ -2,7 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\category\CategoryController;
 
 
 Route::prefix('category')->group(function () {
@@ -12,4 +12,3 @@ Route::prefix('category')->group(function () {
     Route::post('/delete', [CategoryController::class,'delete'])->middleware(['access.level:3'])->name('category.delete');
     Route::patch('/update/{id}', [CategoryController::class,'update'])->middleware(['access.level:3'])->name('category.update');
 });
-
