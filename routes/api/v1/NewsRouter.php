@@ -2,7 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\NewsController;
+use App\Http\Controllers\Api\V1\news\NewsController;
 
 
 Route::prefix('news')->group(function () {

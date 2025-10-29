@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\news;
 
 
-// use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\BaseService;
 
