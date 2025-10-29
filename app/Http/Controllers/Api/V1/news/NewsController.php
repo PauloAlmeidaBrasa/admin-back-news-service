@@ -247,7 +247,7 @@ class NewsController extends BaseController
  *     path="/api/v1/news/delete",
  *     summary="Delete a news by ID",
  *     description="Send the news_ID in the request body to delete the specified news.",
- *     tags={"Delete"},
+ *     tags={"Delete news"},
  *     security={{"bearerAuth": {}}},
  *
  *     @OA\RequestBody(

@@ -149,7 +149,7 @@ class UserController extends BaseController {
  *     path="/api/v1/user/delete",
  *     summary="Delete a user by ID",
  *     description="Send the user_ID in the request body to delete the specified user.",
- *     tags={"Delete"},
+ *     tags={"delete-user"},
  *     security={{"bearerAuth": {}}},
  *
  *     @OA\RequestBody(

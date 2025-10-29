@@ -77,7 +77,7 @@
                 ],
                 "summary": "Add a new category",
                 "description": "Create a new category. Requires JWT authentication.",
-                "operationId": "caf00c5c65cfbb1211bd28d6a16f0e62",
+                "operationId": "ab76a89fe04aa30e99e0441c07ae3862",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -150,7 +150,7 @@
                     "get-category"
                 ],
                 "summary": "Get all registered category who belong to the same client_id of the requester",
-                "operationId": "f75809a479c8dc8e62b9782689fcf7a9",
+                "operationId": "b1a293f764d3208f315e5afebc86473e",
                 "responses": {
                     "200": {
                         "description": "List of category",
@@ -214,7 +214,7 @@
                     "Update categorys"
                 ],
                 "summary": "Update category data",
-                "operationId": "171cdf67e67a9446f54711ebc954e433",
+                "operationId": "ef94f661e45eb784c877c18af0e869f1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -315,7 +315,7 @@
                 ],
                 "summary": "Delete a category by ID",
                 "description": "Send the category_ID in the request body to delete the specified category.",
-                "operationId": "cca9ce136785b287ddd24828322493e5",
+                "operationId": "e0f228ada4f2b021fda0084c0dc10ca4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -420,7 +420,7 @@
                 ],
                 "summary": "Add a new news",
                 "description": "Create a new news. Requires JWT authentication.",
-                "operationId": "c5eacf6d152246ea3c63964097bc8b0f",
+                "operationId": "a7391001ff66934e5beff30f9ccab02c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -493,7 +493,7 @@
                     "get-news"
                 ],
                 "summary": "Get all registered news who belong to the same client_id of the requester",
-                "operationId": "0cb6b12911a33e937e75156a081a3cbf",
+                "operationId": "0d7a984e52107198fb1ea422dc0650c9",
                 "responses": {
                     "200": {
                         "description": "List of news",
@@ -557,7 +557,7 @@
                     "Update newss"
                 ],
                 "summary": "Update news data",
-                "operationId": "dec1757fc846d71dc77253c16253898c",
+                "operationId": "600ea158d7d47d19e8c8e8db4b383aa2",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -654,11 +654,11 @@
         "/api/v1/news/delete": {
             "post": {
                 "tags": [
-                    "Delete"
+                    "Delete news"
                 ],
                 "summary": "Delete a news by ID",
                 "description": "Send the news_ID in the request body to delete the specified news.",
-                "operationId": "24ac437d5000957528566b0b18513914",
+                "operationId": "b812c7101e7dff82d293eb90dc2c389d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -762,7 +762,7 @@
                     "get-users"
                 ],
                 "summary": "Get all registered users who belong to the same client_id of the requester",
-                "operationId": "fd584ecd3feb35c37038f610c47d3974",
+                "operationId": "8d71886425572abe344fe2dab69b78b2",
                 "responses": {
                     "200": {
                         "description": "List of users",
@@ -819,7 +819,7 @@
                 ],
                 "summary": "Add a new user",
                 "description": "Create a new user. Requires JWT authentication.",
-                "operationId": "20d63dea2a3cec21eca63587ddebdee8",
+                "operationId": "997c37c0ca0db6c702fb22ea64a03473",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -895,11 +895,11 @@
         "/api/v1/user/delete": {
             "post": {
                 "tags": [
-                    "Delete"
+                    "delete-user"
                 ],
                 "summary": "Delete a user by ID",
                 "description": "Send the user_ID in the request body to delete the specified user.",
-                "operationId": "0529bd693c2c2f482c1dc22f1a038975",
+                "operationId": "ff26ce4bcf8608cd17883fafeb3f64b4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1003,7 +1003,7 @@
                     "Update users"
                 ],
                 "summary": "Update user data",
-                "operationId": "b8eb619eff0c6be3b6efe0be1a9cbed7",
+                "operationId": "a9c14ed35cfedbed0d1091dd6cb1b208",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1132,12 +1132,20 @@
             "description": "Update newss"
         },
         {
+            "name": "Delete news",
+            "description": "Delete news"
+        },
+        {
             "name": "get-users",
             "description": "get-users"
         },
         {
             "name": "add-user",
             "description": "add-user"
+        },
+        {
+            "name": "delete-user",
+            "description": "delete-user"
         },
         {
             "name": "Update users",
