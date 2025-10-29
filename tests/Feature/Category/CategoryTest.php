@@ -8,13 +8,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Client;
+use App\Models\Category;
 use App\Models\User;
 
-class UserTest extends TestCase
+class CategoryTest extends TestCase
 {
 
     protected $client;
-    protected $user;
+    protected $category;
     protected $token;
 
     protected function setUp(): void
@@ -22,14 +23,22 @@ class UserTest extends TestCase
         parent::setUp();
         $this->artisan('migrate');
         $this->artisan('db:seed');
+
+
         $this->client = Client::factory()->create();
 
-        $this->user = User::factory()->create([
+          $this->user = User::factory()->create([
             'name' => 'userTests',
             'email' => 'test@example.com',
             'password' => bcrypt('123456'),
             'client_id' => $this->client->id,
             'access_level' => 3
+        ]);
+
+        $this->category = Category::factory()->create([
+            'name' => 'category 1',
+            'description' => 'description 1',
+            'client_id' => $this->client->id
         ]);
         
         $response = $this->postJson('/api/v1/login', [
@@ -39,21 +48,21 @@ class UserTest extends TestCase
 
         $this->token = $response->json('access_token');
     }
-    public function test_returns_json_object_with_users_data(): void
+    public function test_returns_json_object_with_category_data(): void
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson("/api/v1/user/get-users");
+        ])->getJson("/api/v1/category/get-category");
 
 
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'success',
                 'data' => [
-                    'users' => [
+                    'category' => [
                         '*' => [
                             'name',
-                            'email'
+                            'description'
                         ]
                     ]
                 ],
@@ -65,7 +74,7 @@ class UserTest extends TestCase
         $invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTc1MjQ5Mjc2NywiZXhwIjoxNzUyNDk2MzY3LCJuYmYiOjE3NTI0OTI3NjcsImp0aSI6IlhiYldFdzRoQll4aHB3dmciLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsImNsaWVudF9pZCI6MSwiYWNjZXNzX2xldmVsIjozLCJuYW1lIjoiUGF1bG8ifQ.YWdwXcBFsnQyR3qwJM2JoUb2qsX686x8rmcNhrSA4-M";  
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $invalidToken,
-        ])->getJson("/api/v1/user/get-users");
+        ])->getJson("/api/v1/category/get-category");
             
 
         $response->assertStatus(401)
@@ -74,14 +83,13 @@ class UserTest extends TestCase
             ]);
 
     }
-    public function test_returns_json_on_deleting_user(): void
+    public function test_returns_json_on_deleting_category(): void
     {
         
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson("/api/v1/user/delete",[ "user_ID" => $this->user->id ]);
-            
-
+        ])->postJson("/api/v1/category/delete",[ "category_ID" => $this->category->id ]);
+           
         $response->assertStatus(200)
             ->assertJsonPath('code', 'SUCCESS');
 
@@ -90,30 +98,30 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function test_updates_user_data_successfully()
+    public function test_updates_category_data_successfully()
     {
         $payload = [
-            'user_ID' => $this->user->id,
-            'name' => 'New Name',
-            'email' => 'new@example.com',
+            'category_ID' => $this->category->id,
+            'name' => 'New category name',
+            'description' => 'new category description',
         ];
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+        ])->patchJson('/api/v1/category/update/'.$this->category->id.'', $payload);
 
 
         $response->assertStatus(200)
             ->assertJsonPath('code', 'SUCCESS')
             ->assertJson([
-                'message' => 'User updated successfully',
+                'message' => 'category updated successfully',
             ]);
 
         // Ensure DB reflects the change
-        $this->assertDatabaseHas('users', [
-            'id' => $this->user->id,
-            'name' => 'New Name',
-            'email' => 'new@example.com',
+        $this->assertDatabaseHas('category', [
+            'id' => $this->category->id,
+            'name' => 'New category name',
+            'description' => 'new category description',
         ]);
 
         
@@ -129,7 +137,7 @@ class UserTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+        ])->patchJson('/api/v1/user/update/'.$this->category->id.'', $payload);
 
         $response->assertStatus(404)
             ->assertJsonPath('code', 'NOTFOUND')
@@ -139,19 +147,19 @@ class UserTest extends TestCase
     }
     public function test_returns_generic_error_on_internal_server_errors() {
 
-        $this->mock(\App\Services\user\UserService::class, function ($mock) {
+        $this->mock(\App\Services\category\CategoryService::class, function ($mock) {
         $mock->shouldReceive('update')
              ->andThrow(new \Exception('Internal Server Error'));
         });
 
         $payload = [
-            'user_ID' => 999,
+            'category_ID' => 999,
             'name' => 'Test Name'
         ];
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->user->id.'', $payload);
+        ])->patchJson('/api/v1/category/update/'.$this->category->id.'', $payload);
 
         $response->assertStatus(500)
             ->assertJson([

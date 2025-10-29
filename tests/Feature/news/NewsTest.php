@@ -4,9 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Client;
 use App\Models\News;
 use App\Models\User;
@@ -149,19 +146,19 @@ class NewsTest extends TestCase
     }
     public function test_returns_generic_error_on_internal_server_errors() {
 
-        $this->mock(\App\Services\UserService::class, function ($mock) {
+        $this->mock(\App\Services\news\NewsService::class, function ($mock) {
         $mock->shouldReceive('update')
              ->andThrow(new \Exception('Internal Server Error'));
         });
 
         $payload = [
-            'user_ID' => 999,
+            'news_ID' => 999,
             'name' => 'Test Name'
         ];
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->news->id.'', $payload);
+        ])->patchJson('/api/v1/news/update/'.$this->news->id.'', $payload);
 
         $response->assertStatus(500)
             ->assertJson([
