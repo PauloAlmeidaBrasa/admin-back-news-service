@@ -13,7 +13,7 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl zip opca
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
 
 # Enable Apache mod_rewrite for Laravel
-# RUN a2enmod rewrite headers
+RUN a2enmod rewrite headers
 RUN a2enmod rewrite
 
 
