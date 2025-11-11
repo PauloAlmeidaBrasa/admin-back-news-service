@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -12,4 +11,3 @@ Route::prefix('user')->group(function () {
     Route::post('/delete', [UserController::class,'delete'])->middleware(['access.level:3'])->name('users.delete');
     Route::patch('/update/{id}', [UserController::class,'update'])->middleware(['access.level:3'])->name('users.update');
 });
-

@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -12,4 +11,3 @@ Route::prefix('news')->group(function () {
     Route::post('/delete', [NewsController::class,'delete'])->middleware(['access.level:3'])->name('news.delete');
     Route::patch('/update/{id}', [NewsController::class,'update'])->middleware(['access.level:3'])->name('news.update');
 });
-
