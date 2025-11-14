@@ -46,7 +46,17 @@ class BaseController extends Controller
             'token_type' => $token['token_type'],
             'expires_in' => $token['expires_in'],
             'user' => $token['user']
-        ]);
+        ])->cookie(
+            'refresh_token',
+            $token['refresh_token'],
+            60 * 24 * 7, // 7 days
+            '/',
+            'localhost', // domain
+            false, // Secure (true if HTTPS)
+            true,  // HttpOnly
+            // false, // Raw
+            // 'None' // SameSite
+        );
     }
     public function respondWithSuccessList($data, string $feature, int $statusCode = 200, ?string $message = null)
     {

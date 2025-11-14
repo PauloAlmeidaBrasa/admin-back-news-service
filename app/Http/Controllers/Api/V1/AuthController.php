@@ -71,4 +71,26 @@ class AuthController extends BaseController
             ], 500);
         }
     }
+
+    public function refresh(LoginRequest $request)
+    {
+
+        $refreshToken = $request->cookie('refresh_token');
+
+        if (!$refreshToken) {
+            return response()->json(['error' => 'No refresh token'], 401);
+        }
+
+        try {
+            $newToken = $this->authService->refresh();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid refresh token'], 401);
+        }
+
+        return response()->json([
+            'access_token' => $newToken,
+            'token_type' => 'Bearer',
+        ]);
+
+    }
 }
