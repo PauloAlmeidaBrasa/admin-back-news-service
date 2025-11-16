@@ -44,7 +44,6 @@ class AuthService
                 'success' => true,
                 'token' => $token,
                 'token_type' => 'Bearer',
-                'expires_in' => $this->geTokenExpires(),
                 'user' => auth()->user()->name,
                 'refresh_token' => $refreshToken
             ];
@@ -82,8 +81,5 @@ class AuthService
             ]
         ]);     
         return $objToken->getData()->authorisation->token;
-    }
-    protected function geTokenExpires() {
-        return auth()->factory()->getTTL() * 60;
     }
 }
