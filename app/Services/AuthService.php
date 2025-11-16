@@ -38,12 +38,15 @@ class AuthService
                 'name' => $user->name
             ])->login($user);
 
+            $refreshToken = JWTAuth::fromUser($user);
+
             return [
                 'success' => true,
                 'token' => $token,
                 'token_type' => 'Bearer',
                 'expires_in' => $this->geTokenExpires(),
-                'user' => auth()->user()->name
+                'user' => auth()->user()->name,
+                'refresh_token' => $refreshToken
             ];
         } catch (\Throwable $e) {
             Log::error([
@@ -71,13 +74,14 @@ class AuthService
 
     public function refresh()
     {
-        return response()->json([
+        $objToken = response()->json([
             'user' => Auth::user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
-        ]);
+        ]);     
+        return $objToken->getData()->authorisation->token;
     }
     protected function geTokenExpires() {
         return auth()->factory()->getTTL() * 60;

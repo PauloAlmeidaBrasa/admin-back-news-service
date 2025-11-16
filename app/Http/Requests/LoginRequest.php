@@ -16,10 +16,29 @@ class LoginRequest extends FormRequest
 
     public function rules()
     {
-        return [
-            'email' => 'required|email',
-            'password' => 'required',
-        ];
+
+        $routeName = $this->route()->getName();
+
+        $rules = [];
+
+        switch ($routeName) {
+            case 'auth.refresh':
+                $rules = [];
+            break;
+            case 'auth.login':
+                $rules = [
+                    'email' => 'required|email',
+                    'password' => 'required',
+                ];
+            break;
+        }
+        return $rules;
+
+
+        // return [
+        //     'email' => 'required|email',
+        //     'password' => 'required',
+        // ];
     }
 
     public function failedValidation(Validator $validator)

@@ -72,6 +72,30 @@ class AuthController extends BaseController
         }
     }
 
+
+/**
+* 
+* @OA\Get(
+*     path="/api/v1/refresh",
+*     summary="endpoint to get a new token. When the access_token expire, that endpoint is going to response a new token that is going to be setted in session storage automaticly",
+*     tags={"Authentication"},
+*     @OA\RequestBody(
+*         required=false
+*     ),
+*     @OA\Response(
+*         response=200,
+*         description="A new token as string format",
+*         @OA\JsonContent(
+*             @OA\Property(property="access_token", type="string"),
+*             @OA\Property(property="token_type", type="string", example="Bearer")
+*         )
+*     ),
+*     @OA\Response(
+*         response=401,
+*         description="Invalid token"
+*     )
+* )
+*/
     public function refresh(LoginRequest $request)
     {
 
