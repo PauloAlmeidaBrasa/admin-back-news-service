@@ -30,7 +30,7 @@ Class NewsService extends BaseService {
         try {
             $query = News::where('client_id', $clientId)
                 ->orderBy('created_at', 'desc')
-                ->select(['id','title', 'subtitle', 'text', 'category']);
+                ->select(['id','title', 'subtitle', 'text', 'category','created_at']);
 
             if (!is_null($newsId)) {
                 $query->where('id', $newsId);

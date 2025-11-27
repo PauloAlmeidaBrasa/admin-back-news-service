@@ -7,9 +7,11 @@ use Tests\TestCase;
 use App\Models\Client;
 use App\Models\News;
 use App\Models\User;
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 class NewsTest extends TestCase
 {
+
+    use RefreshDatabase;
 
     protected $client;
     protected $news;
@@ -17,14 +19,13 @@ class NewsTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-        $this->artisan('migrate');
-        $this->artisan('db:seed');
+    parent::setUp();
 
 
+        // Create test data
         $this->client = Client::factory()->create();
 
-          $this->user = User::factory()->create([
+        $this->user = User::factory()->create([
             'name' => 'userTests',
             'email' => 'test@example.com',
             'password' => bcrypt('123456'),
@@ -39,7 +40,8 @@ class NewsTest extends TestCase
             'client_id' => $this->client->id,
             'category' => 1
         ]);
-        
+
+        // Generate token
         $response = $this->postJson('/api/v1/login', [
             'email' => 'test@example.com',
             'password' => '123456'
@@ -53,6 +55,7 @@ class NewsTest extends TestCase
             'Authorization' => 'Bearer ' . $this->token,
         ])->getJson("/api/v1/news/get-news");
 
+        // dd($this->token);
 
         $response->assertStatus(200)
             ->assertJsonStructure([

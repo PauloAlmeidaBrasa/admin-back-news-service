@@ -78,7 +78,9 @@ cd orchestrator-news
 
 git submodule update --init backend-news-service
 
-docker compose up --build
+docker compose -f docker-compose.yml -f docker-compose.dev.yml build admin-back-news-service  (for dev)
+
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up admin-back-news-service  (for dev)
 
 💻 Running Locally (Without Docker)
 1. Install dependencies

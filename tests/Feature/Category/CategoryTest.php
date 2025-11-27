@@ -5,14 +5,15 @@ namespace Tests\Feature;
 use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Client;
 use App\Models\Category;
 use App\Models\User;
 
+
 class CategoryTest extends TestCase
 {
+    use RefreshDatabase;
+
 
     protected $client;
     protected $category;
@@ -21,9 +22,6 @@ class CategoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('migrate');
-        $this->artisan('db:seed');
-
 
         $this->client = Client::factory()->create();
 
@@ -50,6 +48,7 @@ class CategoryTest extends TestCase
     }
     public function test_returns_json_object_with_category_data(): void
     {
+
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
         ])->getJson("/api/v1/category/get-category");

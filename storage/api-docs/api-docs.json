@@ -70,6 +70,42 @@
                 }
             }
         },
+        "/api/v1/refresh": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "endpoint to get a new token. When the access_token expire, that endpoint is going to response a new token that is going to be setted in session storage automaticly",
+                "operationId": "090e23b54307261b0fef52e0f3ac0014",
+                "requestBody": {
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "A new token as string format",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    }
+                }
+            }
+        },
         "/api/v1/category/add-category": {
             "post": {
                 "tags": [

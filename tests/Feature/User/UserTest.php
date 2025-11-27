@@ -12,6 +12,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
 
     protected $client;
     protected $user;
@@ -20,8 +21,8 @@ class UserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('migrate');
-        $this->artisan('db:seed');
+        // $this->artisan('migrate');
+        // $this->artisan('db:seed');
         $this->client = Client::factory()->create();
 
         $this->user = User::factory()->create([

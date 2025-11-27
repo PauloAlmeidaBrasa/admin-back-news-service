@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 
@@ -38,12 +39,18 @@ class AuthService
                 'name' => $user->name
             ])->login($user);
 
+            $refreshToken = JWTAuth::fromUser($user);
+
+            $payload = JWTAuth::setToken($token)->getPayload();
+            $expiresIn = Carbon::createFromTimestamp($payload->get('exp'))->format('Y-m-d H:i:s');
+
             return [
                 'success' => true,
                 'token' => $token,
                 'token_type' => 'Bearer',
-                'expires_in' => $this->geTokenExpires(),
-                'user' => auth()->user()->name
+                'user' => auth()->user()->name,
+                'expires_in' => $expiresIn,
+                'refresh_token' => $refreshToken
             ];
         } catch (\Throwable $e) {
             Log::error([
@@ -71,15 +78,13 @@ class AuthService
 
     public function refresh()
     {
-        return response()->json([
+        $objToken = response()->json([
             'user' => Auth::user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
-        ]);
-    }
-    protected function geTokenExpires() {
-        return auth()->factory()->getTTL() * 60;
+        ]);     
+        return $objToken->getData()->authorisation->token;
     }
 }
