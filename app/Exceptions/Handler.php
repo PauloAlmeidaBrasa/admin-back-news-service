@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Support\Facades\Log;
+
 
 class Handler extends ExceptionHandler
 {
@@ -23,8 +25,27 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\Throwable $e, $request) {
+
+            $errorsCodeToHandle = ['42S02'];  // identifying errors related to the database
+            if(in_array($e->getCode(),$errorsCodeToHandle)) {  
+                Log::error([
+                    'errorMessage' =>  $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'number' => $e->getLine()
+                ]);
+                 return response()->json([
+                    'success' => false,
+                    'message' => 'Internal Server error',
+                ], 500);
+            }
         });
+    }
+
+    protected function unauthenticated($request, \Throwable $exception)
+    {
+        return response()->json([
+            'error' => 'Unauthenticated',
+        ], 401);
     }
 }

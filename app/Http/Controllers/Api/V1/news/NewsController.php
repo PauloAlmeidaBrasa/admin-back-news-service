@@ -129,15 +129,14 @@ class NewsController extends BaseController
  * )
  */
 
-    public function newsByClientId(){
+    public function newsByClientId(Request $request){
+
 
         $payload = auth()->payload();
         $client =  $payload->get('client_id');
 
-        $newsID = null;
-        if($this->newsRequest->input("news_ID")){
-            $newsID = $this->newsRequest->input("news_ID");
-        }
+        $newsID = $request->query('news_ID');
+
 
         $result = $this->newsService->newsByClientId($client,$newsID);
 
