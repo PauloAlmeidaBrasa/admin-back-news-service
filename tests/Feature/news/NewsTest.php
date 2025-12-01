@@ -139,7 +139,7 @@ class NewsTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->news->id.'', $payload);
+        ])->patchJson('/api/v1/user/update/', $payload);
 
         $response->assertStatus(404)
             ->assertJsonPath('code', 'NOTFOUND')

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Client;
 use App\Models\Category;
 use App\Models\User;
+// use Illuminate\Foundation\Testing\DatabaseMigrations;
+
 
 
 class CategoryTest extends TestCase
@@ -48,6 +50,8 @@ class CategoryTest extends TestCase
     }
     public function test_returns_json_object_with_category_data(): void
     {
+        // dd(env('APP_ENV'), config('database.default'));
+
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
@@ -136,7 +140,7 @@ class CategoryTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->patchJson('/api/v1/user/update/'.$this->category->id.'', $payload);
+        ])->patchJson('/api/v1/user/update/', $payload);
 
         $response->assertStatus(404)
             ->assertJsonPath('code', 'NOTFOUND')
