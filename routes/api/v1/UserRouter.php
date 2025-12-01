@@ -9,5 +9,5 @@ Route::prefix('user')->group(function () {
     Route::get('/get-users', [UserController::class,'getUsersByClientId'])->middleware(['access.level:3'])->name('users.all');
     Route::post('/add-user', [UserController::class,'store'])->middleware(['access.level:3'])->name('users.store');
     Route::post('/delete', [UserController::class,'delete'])->middleware(['access.level:3'])->name('users.delete');
-    Route::patch('/update/{id}', [UserController::class,'update'])->middleware(['access.level:3'])->name('users.update');
+    Route::patch('/update', [UserController::class,'update'])->middleware(['access.level:3'])->name('users.update');
 });

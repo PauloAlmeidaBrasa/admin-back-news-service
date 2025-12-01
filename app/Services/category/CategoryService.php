@@ -32,7 +32,7 @@ Class CategoryService extends BaseService {
 
             $query = Category::where('client_id', $clientId)
                 ->orderBy('created_at', 'desc')
-                ->select(['id','name', 'description']);
+                ->select(['id','name', 'description','created_at']);
 
             if (!is_null($categoryId)) {
                 $query->where('id', $categoryId);
